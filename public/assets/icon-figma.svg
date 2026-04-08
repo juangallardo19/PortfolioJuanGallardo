@@ -1,0 +1,9 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="logos:figma">
+<path id="Vector" d="M15 45C19.14 45 22.5 41.64 22.5 37.5V30H15C10.86 30 7.5 33.36 7.5 37.5C7.5 41.64 10.86 45 15 45Z" fill="var(--fill-0, #C8FF00)"/>
+<path id="Vector_2" d="M7.5 22.5C7.5 18.36 10.86 15 15 15H22.5V30H15C10.86 30 7.5 26.64 7.5 22.5Z" fill="var(--fill-0, #C8FF00)" fill-opacity="0.33"/>
+<path id="Vector_3" d="M7.5 7.5C7.5 3.36 10.86 0 15 0H22.5V15H15C10.86 15 7.5 11.64 7.5 7.5Z" fill="var(--fill-0, #C8FF00)"/>
+<path id="Vector_4" d="M22.5 0H30C34.14 0 37.5 3.36 37.5 7.5C37.5 11.64 34.14 15 30 15H22.5V0Z" fill="var(--fill-0, #C8FF00)" fill-opacity="0.33"/>
+<path id="Vector_5" d="M37.5 22.5C37.5 26.64 34.14 30 30 30C25.86 30 22.5 26.64 22.5 22.5C22.5 18.36 25.86 15 30 15C34.14 15 37.5 18.36 37.5 22.5Z" fill="var(--fill-0, #C8FF00)"/>
+</g>
+</svg>
