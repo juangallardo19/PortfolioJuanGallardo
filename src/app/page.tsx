@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
+import { AboutSection } from "@/components/sections/AboutSection";
 import { ParallaxProvider } from "@/components/ui/ParallaxProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 
@@ -15,6 +16,7 @@ export default function Home() {
         <div className="pt-[64px] lg:pt-[30px]">
           <HeroSection />
           <SkillsSection />
+          <AboutSection />
         </div>
       </main>
     </LanguageProvider>

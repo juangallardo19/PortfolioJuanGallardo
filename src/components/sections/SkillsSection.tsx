@@ -50,7 +50,8 @@ export function SkillsSection() {
     <section
       ref={sectionRef}
       id="habilidades"
-      className="dot-pattern-green relative w-full overflow-hidden min-h-[720px]"
+      className="dot-pattern-green relative flex items-center justify-center w-full overflow-hidden"
+      style={{ minHeight: "max(920px, 110svh)" }}
     >
       {/* Background image — 75% opacity per design */}
       <Image
@@ -69,11 +70,11 @@ export function SkillsSection() {
         className="absolute inset-0 w-full h-full pointer-events-none select-none object-fill"
       />
 
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-[60px] w-full max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-[60px] py-[48px] lg:py-[56px]">
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-[60px] w-full max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-[60px] py-[40px] lg:py-[60px]">
 
         {/* ── LEFT: Skills grid ─────────────────────────────────── */}
         <div
-          className={`relative shrink-0 overflow-visible w-[min(590px,calc(100vw-48px))] aspect-square ${
+          className={`relative shrink-0 overflow-visible w-[min(540px,calc(100vw-48px))] aspect-square ${
             isVisible ? "animate-fade-in-left" : "opacity-0"
           }`}
         >
@@ -135,11 +136,11 @@ export function SkillsSection() {
           <img
             src="/assets/skills/skillsPhoto.svg"
             alt="Juan Pablo Gallardo"
-            className="w-[min(466px,calc(100vw-48px))] h-auto pb-[8px]"
+            className="w-[min(360px,calc(100vw-48px))] h-auto pb-[6px]"
           />
 
           {/* "Mis Habilidades" card — height adapts to content */}
-          <div className="relative w-[min(597px,calc(100vw-48px))]">
+          <div className="relative w-[min(520px,calc(100vw-48px))]">
             {/* SVG background stretches to match content height */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -153,23 +154,23 @@ export function SkillsSection() {
             <div className="relative z-10 flex flex-col px-8 py-5 gap-3">
 
               {/* Title — Big Shoulders Text Bold (no stencil), 48px, 20px top+bottom padding */}
-              <h2 className="m-0 py-5 leading-[1.0] font-bold text-right w-full">
+              <h2 className="m-0 py-4 leading-[1.0] font-normal text-right w-full">
                 <span
-                  className="text-[clamp(22px,3.75vw,48px)] font-bold text-[#4d4c4c]"
+                  className="text-[clamp(26px,3.5vw,48px)] font-normal text-[#4d4c4c]"
                   style={{ WebkitTextStroke: "1px #000000" }}
                 >
                   {skills.titlePre[lang]}{" "}
                 </span>
                 <span
-                  className="text-[clamp(22px,3.75vw,48px)] font-bold text-skills-green"
+                  className="text-[clamp(26px,3.5vw,48px)] font-normal text-skills-green"
                   style={{ WebkitTextStroke: "1px #000000" }}
                 >
                   {skills.titleHighlight[lang]}
                 </span>
               </h2>
 
-              {/* Description — 32px extralight, justified, "kit completo" bold stencil */}
-              <p className="text-[clamp(14px,2.5vw,32px)] text-[#4d4c4c] leading-[1.5] m-0 font-extralight text-justify w-full pb-5">
+              {/* Description — extralight, justified, "kit completo" bold stencil */}
+              <p className="text-[clamp(14px,1.8vw,22px)] text-[#4d4c4c] leading-[1.5] m-0 font-extralight text-justify w-full pb-4">
                 {descPre}
                 <strong className="text-skills-green font-bold font-big-shoulders-stencil">
                   {descHighlight}
