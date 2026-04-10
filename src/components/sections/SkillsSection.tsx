@@ -26,9 +26,10 @@ export function SkillsSection() {
   const skills = t.skills;
   const [descPre, descHighlight, descPost] = skills.description[lang];
 
-  // Scroll-triggered entrance animation (fires once when section enters viewport)
+  // "idle" = never seen | "entering" = visible | "exiting" = scrolled away
+  type AnimState = "idle" | "entering" | "exiting";
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [anim, setAnim] = useState<AnimState>("idle");
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -36,8 +37,9 @@ export function SkillsSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
+          setAnim("entering");
+        } else {
+          setAnim(prev => prev === "idle" ? "idle" : "exiting");
         }
       },
       { threshold: 0.12 }
@@ -72,10 +74,11 @@ export function SkillsSection() {
 
       <div className="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-[60px] w-full max-w-[1280px] mx-auto px-6 sm:px-10 lg:px-[60px] py-[40px] lg:py-[60px]">
 
-        {/* ── LEFT: Skills grid ─────────────────────────────────── */}
+        {/* ── LEFT: Skills grid — on mobile appears BELOW the right column ── */}
         <div
-          className={`relative shrink-0 overflow-visible w-[min(540px,calc(100vw-48px))] aspect-square ${
-            isVisible ? "animate-fade-in-left" : "opacity-0"
+          className={`relative shrink-0 overflow-visible w-[min(540px,calc(100vw-48px))] aspect-square order-2 lg:order-1 ${
+            anim === "entering" ? "animate-fade-in-left" :
+            anim === "exiting"  ? "animate-fade-out-left" : "opacity-0"
           }`}
         >
           {/* Organic brush border + white fill baked into SVG */}
@@ -92,8 +95,11 @@ export function SkillsSection() {
             {SKILLS.map((skill, i) => (
               <div
                 key={skill.name}
-                className={`relative aspect-[148/127] ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
-                style={isVisible ? { animationDelay: `${CARD_DELAYS[i]}ms` } : undefined}
+                className={`relative aspect-[148/127] ${
+                  anim === "entering" ? "animate-fade-in-up" :
+                  anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
+                }`}
+                style={anim !== "idle" ? { animationDelay: `${CARD_DELAYS[i]}ms` } : undefined}
               >
                 {/* Card shape SVG */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -124,12 +130,13 @@ export function SkillsSection() {
           </div>
         </div>
 
-        {/* ── RIGHT: Photo + Habilidades card ───────────────────── */}
+        {/* ── RIGHT: Photo + Habilidades card — on mobile appears FIRST ── */}
         <div
-          className={`flex flex-col items-center lg:items-end gap-4 shrink-0 ${
-            isVisible ? "animate-fade-in-right" : "opacity-0"
+          className={`flex flex-col items-center lg:items-end gap-4 shrink-0 order-1 lg:order-2 ${
+            anim === "entering" ? "animate-fade-in-right" :
+            anim === "exiting"  ? "animate-fade-out-right" : "opacity-0"
           }`}
-          style={isVisible ? { animationDelay: "300ms" } : undefined}
+          style={anim !== "idle" ? { animationDelay: "300ms" } : undefined}
         >
           {/* Photo blob */}
           {/* eslint-disable-next-line @next/next/no-img-element */}

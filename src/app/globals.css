@@ -123,6 +123,28 @@ body {
   animation: fadeIn 0.6s ease both;
 }
 
+/* ── Exit animations (mirror of entry, slightly faster) ── */
+@keyframes fadeOutLeft {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-32px); }
+}
+@keyframes fadeOutRight {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(32px); }
+}
+@keyframes fadeOutDown {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(32px); }
+}
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+.animate-fade-out-left  { animation: fadeOutLeft  0.45s cubic-bezier(0.55, 0, 0.78, 0) both; }
+.animate-fade-out-right { animation: fadeOutRight 0.45s cubic-bezier(0.55, 0, 0.78, 0) both; }
+.animate-fade-out-down  { animation: fadeOutDown  0.45s cubic-bezier(0.55, 0, 0.78, 0) both; }
+.animate-fade-out       { animation: fadeOut      0.45s ease both; }
+
 /* ─── Custom Utilities ────────────────────────────── */
 /* WebkitTextStroke no tiene clase Tailwind nativa */
 @utility text-stroke-dark {

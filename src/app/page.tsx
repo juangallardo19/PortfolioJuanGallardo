@@ -16,6 +16,7 @@ export default function Home() {
         <div className="pt-[64px] lg:pt-[30px]">
           <HeroSection />
           <SkillsSection />
+          <div className="h-[60px] lg:h-[80px]" />
           <AboutSection />
         </div>
       </main>

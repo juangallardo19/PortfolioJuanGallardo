@@ -29,14 +29,22 @@ export function AboutSection() {
   const { lang } = useLang();
   const about = t.about;
 
+  // "idle" = never seen | "entering" = visible | "exiting" = scrolled away
+  type AnimState = "idle" | "entering" | "exiting";
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [anim, setAnim] = useState<AnimState>("idle");
 
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setAnim("entering");
+        } else {
+          setAnim(prev => prev === "idle" ? "idle" : "exiting");
+        }
+      },
       { threshold: 0.1 }
     );
     observer.observe(el);
@@ -57,7 +65,8 @@ export function AboutSection() {
         {/* ── LEFT: Title + Description + Social ─────────────────── */}
         <div
           className={`flex flex-col w-full lg:w-auto lg:max-w-[480px] shrink-0 ${
-            isVisible ? "animate-fade-in-left" : "opacity-0"
+            anim === "entering" ? "animate-fade-in-left" :
+            anim === "exiting"  ? "animate-fade-out-left" : "opacity-0"
           }`}
         >
           <div className="flex flex-col gap-4">
@@ -79,8 +88,11 @@ export function AboutSection() {
 
           {/* Social media card — mt-[30px] gap from description, w-fit fixes SVG alignment */}
           <div
-            className={`relative mt-[30px] w-fit ${isVisible ? "animate-fade-in-up" : "opacity-0"}`}
-            style={isVisible ? { animationDelay: "250ms" } : undefined}
+            className={`relative mt-[30px] w-fit ${
+              anim === "entering" ? "animate-fade-in-up" :
+              anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
+            }`}
+            style={anim !== "idle" ? { animationDelay: "250ms" } : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -98,9 +110,10 @@ export function AboutSection() {
                   rel="noopener noreferrer"
                   aria-label={s.name}
                   className={`relative shrink-0 w-[76px] h-[76px] hover:brightness-75 active:scale-95 transition-all ${
-                    isVisible ? "animate-fade-in-up" : "opacity-0"
+                    anim === "entering" ? "animate-fade-in-up" :
+                    anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
                   }`}
-                  style={isVisible ? { animationDelay: `${350 + i * 100}ms` } : undefined}
+                  style={anim !== "idle" ? { animationDelay: `${350 + i * 100}ms` } : undefined}
                 >
                   <div className="relative w-full h-full">
                     <Image src={s.icon} alt={s.name} fill className="object-contain" />
@@ -114,9 +127,10 @@ export function AboutSection() {
         {/* ── RIGHT: About card ────────────────────────────────────── */}
         <div
           className={`relative shrink-0 w-[min(420px,calc(100vw-48px))] ${
-            isVisible ? "animate-fade-in-right" : "opacity-0"
+            anim === "entering" ? "animate-fade-in-right" :
+            anim === "exiting"  ? "animate-fade-out-right" : "opacity-0"
           }`}
-          style={isVisible ? { animationDelay: "150ms" } : undefined}
+          style={anim !== "idle" ? { animationDelay: "150ms" } : undefined}
         >
           {/* CardAboutMe.svg — visual only */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
