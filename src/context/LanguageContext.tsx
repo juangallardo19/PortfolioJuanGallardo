@@ -59,4 +59,20 @@ export const t = {
     btnCV: { es: "Descargar CV", en: "Download CV" },
     btnMore: { es: "Ver mas...", en: "See more..." },
   },
+  skills: {
+    titlePre:       { es: "Mis",         en: "My"      },
+    titleHighlight: { es: "Habilidades", en: "Skills"  },
+    description: {
+      es: [
+        "Estas son las herramientas con las que trabajo día a día para construir cosas que funcionan bien y se ven mejor. Me gusta tener un ",
+        "kit completo",
+        " para resolver cualquier reto que se ponga en el camino. Siempre sumando nuevas habilidades al inventario.",
+      ],
+      en: [
+        "These are the tools I work with day to day to build things that work well and look better. I like having a ",
+        "complete toolkit",
+        " to solve any challenge that comes my way. Always adding new skills to the inventory.",
+      ],
+    },
+  },
 } as const;

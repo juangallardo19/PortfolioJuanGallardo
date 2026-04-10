@@ -25,7 +25,7 @@ export function Navbar() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/assets/nav-bg.svg"
+          src="/assets/hero/nav-bg.svg"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 w-full h-full pointer-events-none select-none"
@@ -35,7 +35,7 @@ export function Navbar() {
           {/* Logo */}
           <Link href="#inicio" className="shrink-0">
             <Image
-              src="/assets/logo.png"
+              src="/assets/hero/logo.png"
               alt="JPG Logo"
               width={155}
               height={60}
@@ -138,7 +138,7 @@ export function Navbar() {
         <div className="relative flex items-center justify-between px-5 h-[64px] bg-[#c8ff00] border-b-2 border-black/20">
           <Link href="#inicio" onClick={() => setOpen(false)}>
             <Image
-              src="/assets/logo.png"
+              src="/assets/hero/logo.png"
               alt="JPG Logo"
               width={110}
               height={42}

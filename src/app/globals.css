@@ -123,6 +123,26 @@ body {
   animation: fadeIn 0.6s ease both;
 }
 
+/* ─── Custom Utilities ────────────────────────────── */
+/* WebkitTextStroke no tiene clase Tailwind nativa */
+@utility text-stroke-dark {
+  -webkit-text-stroke: 1px #4d4c4c;
+}
+@utility text-stroke-charcoal {
+  -webkit-text-stroke: 1px #4d4c4c;
+}
+@utility text-stroke-skills-green {
+  -webkit-text-stroke: 1px #00ffb2;
+}
+@utility text-stroke-black {
+  -webkit-text-stroke: 1px #000000;
+}
+
+/* Font family utilities */
+@utility font-big-shoulders-stencil {
+  font-family: var(--font-big-shoulders-stencil), 'Big Shoulders Stencil', sans-serif;
+}
+
 /* Staggered delay utilities */
 .delay-100 { animation-delay: 0.10s; }
 .delay-200 { animation-delay: 0.20s; }

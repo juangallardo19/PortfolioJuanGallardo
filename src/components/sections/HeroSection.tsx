@@ -18,7 +18,7 @@ export function HeroSection() {
     >
       {/* Background */}
       <Image
-        src="/assets/hero-section-bg.png"
+        src="/assets/hero/hero-section-bg.png"
         alt=""
         fill
         className="object-cover pointer-events-none"
@@ -131,7 +131,7 @@ export function HeroSection() {
         {/* ── Right: Photo ──────────────────────────── */}
         <div className="relative shrink-0 animate-fade-in-right delay-300">
           <Image
-            src="/assets/hero-photo.png"
+            src="/assets/hero/hero-photo.png"
             alt="Juan Pablo Gallardo — Full Stack Developer"
             width={520}
             height={620}
