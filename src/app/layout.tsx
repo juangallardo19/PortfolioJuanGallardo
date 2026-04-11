@@ -28,7 +28,12 @@ export const metadata: Metadata = {
   description:
     "Portafolio de Juan Pablo Gallardo, desarrollador Full Stack colombiano apasionado por construir productos digitales con impacto.",
   icons: {
-    icon: "/assets/hero/logo.png",
+    icon: [
+      { url: "/assets/hero/logo.png", sizes: "any" },
+      { url: "/assets/hero/logo.png", sizes: "192x192", type: "image/png" },
+    ],
+    shortcut: "/assets/hero/logo.png",
+    apple: { url: "/assets/hero/logo.png", sizes: "180x180" },
   },
 };
 

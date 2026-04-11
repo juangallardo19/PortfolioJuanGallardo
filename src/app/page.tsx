@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { AboutSection } from "@/components/sections/AboutSection";
+import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { ParallaxProvider } from "@/components/ui/ParallaxProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 
@@ -17,7 +18,18 @@ export default function Home() {
           <HeroSection />
           <SkillsSection />
           <div className="h-[60px] lg:h-[80px]" />
-          <AboutSection />
+          {/*
+            About + Projects share one dot-pattern section.
+            A centered separator line (max 640px) divides them.
+          */}
+          <section className="dot-pattern relative w-full">
+            <AboutSection />
+            {/* Separator — 640px centered, not full-width */}
+            <div className="relative z-10 mx-auto my-[60px] lg:my-[80px] h-[1px] bg-[#4d4c4c]"
+              style={{ width: "min(640px, calc(100% - 48px))" }}
+            />
+            <ProjectsSection />
+          </section>
         </div>
       </main>
     </LanguageProvider>

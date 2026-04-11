@@ -106,4 +106,10 @@ export const t = {
       label: { es: "Encuéntrame en", en: "Find me on" },
     },
   },
+  projects: {
+    subtitle:       { es: "Algunas de las cosas que he construido",       en: "Some things I've built"                },
+    titlePre:       { es: "Estos son",                                     en: "These are"                             },
+    titleHighlight: { es: "Mis proyectos",                                 en: "My projects"                           },
+    github:         { es: "Ver en GitHub",                                 en: "View on GitHub"                        },
+  },
 } as const;

@@ -55,7 +55,7 @@ export function AboutSection() {
     <section
       ref={sectionRef}
       id="acerca"
-      className="dot-pattern relative flex items-center justify-center w-full overflow-hidden"
+      className="relative flex items-center justify-center w-full overflow-hidden"
       style={{ minHeight: "max(920px, 110svh)" }}
     >
       <Image src="/assets/about/about-section-bg.png" alt="" fill className="object-cover pointer-events-none" />
