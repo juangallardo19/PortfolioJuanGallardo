@@ -5,65 +5,65 @@ import { useRef, useEffect, useState } from "react";
 import { useLang, t } from "@/context/LanguageContext";
 
 // ─────────────────────────────────────────────────────────────────
-//  CARD LAYOUT — separate constants for large and small cards.
-//  All values are % of the card's rendered height/width.
+//  CARD LAYOUT — all values are % of the card's design dimensions.
 //
-//  TUNE CARD_LG for Card 1 and Card 6 (large, ~604×616 aspect).
-//  TUNE CARD_SM for Cards 2–5          (small, ~404×367 aspect).
+//  CARD_LG design width: 487px  (58% of 840px usable at desktop)
+//  CARD_SM design width: 321px  (flex-1 remainder at desktop)
+//
+//  Font sizes are in px at the design width. Each card applies
+//  CSS zoom = renderedWidth / designWidth, so every element
+//  (fonts, icons, link, positions) scales proportionally — just
+//  like zooming out in the browser — as the card gets smaller.
 // ─────────────────────────────────────────────────────────────────
 
 const CARD_LG = {
-  // ── Text (title + description) ──────────────────────────────
-  textTop:    50.5,  // % from card top  → push down to clear the image
-  textLeft:    10.5,  // % from card left → used when textAlign="left"
-  textRight:   10.5,  // % from card right → used when textAlign="right"
-  textW:      81.0,  // % width of text column
+  designWidth: 487,
 
-  // ── Tech icons ───────────────────────────────────────────────
-  iconsTop:   75.0,  // % from card top  → above footer (~71%). Increase to push lower
-  iconsLeft:   10.5,  // % from card left  → used when textAlign="left"
-  iconsRight:  10.5,  // % from card right → used when textAlign="right"
-  iconsW:     83.0,  // % width of icons row
-  iconSize:   "10%", // individual icon size (% of card width)
+  textTop:    50.0,
+  textLeft:   10.5,
+  textRight:  10.5,
+  textW:      81.0,
 
-  // ── "Ver en GitHub" link ─────────────────────────────────────
-  linkTop:    86.0,  // % from card top  → inside the colored footer zone
-  linkLeft:   42.0,  // % from card left → align with the GitHub circle
+  iconsTop:   76.5,
+  iconsLeft:  10.5,
+  iconsRight: 10.5,
+  iconsW:     83.0,
+  iconSize:   "10%",
 
-  // ── Font sizes ───────────────────────────────────────────────
-  // vw-based: scales from mobile min → desktop max progressively
-  titleSize: "clamp(22px, 2.0vw, 26px)",  // 390px→22px  | 1280px→26px
-  descSize:  "clamp(17px, 1.6vw, 21px)",  // 390px→17px  | 1280px→21px
-  linkSize:  "clamp(15px, 1.1vw, 17px)",  // 390px→12px  | 1280px→17px
+  linkTop:    87.0,
+  linkLeft:   42.0,
+
+  // px at design width — zoom handles scaling at all other sizes
+  titleSize: "26px",
+  descSize:  "21px",
+  linkSize:  "17px",
 } as const;
 
 const CARD_SM = {
-  // ── Text (title + description) ──────────────────────────────
-  textTop:    51.0,  // % from card top
-  textLeft:    10.5,  // % from card left  → used when textAlign="left"
-  textRight:   10.5,  // % from card right → used when textAlign="right"
-  textW:      80.0,  // % width of text column
+  designWidth: 321,
 
-  // ── Tech icons ───────────────────────────────────────────────
-  iconsTop:   76.5,  // % from card top  → near footer (~70%). Increase to push lower
-  iconsLeft:   10.5,  // % from card left  → used when textAlign="left"
-  iconsRight:  10.5,  // % from card right → used when textAlign="right"
-  iconsW:     83.0,  // % width
-  iconSize:   "9%",  // individual icon size
+  textTop:    51.0,
+  textLeft:   10.5,
+  textRight:  10.5,
+  textW:      80.0,
 
-  // ── "Ver en GitHub" link ─────────────────────────────────────
-  linkTop:    84.0,  // % from card top
-  linkLeft:   40.0,  // % from card left
+  iconsTop:   75.5,
+  iconsLeft:  10.5,
+  iconsRight: 10.5,
+  iconsW:     83.0,
+  iconSize:   "9%",
 
-  // ── Font sizes ───────────────────────────────────────────────
-  // vw-based: scales from mobile min → desktop max progressively
-  titleSize: "clamp(13px, 1.4vw, 20px)",  // 390px→18px  | 1280px→20px
-  descSize:  "clamp(8px, 1.2vw, 15px)",  // 390px→13px  | 1280px→16px
-  linkSize:  "clamp(8px, 0.9vw, 13px)",  // 390px→11px  | 1280px→13px
+  linkTop:    85.0,
+  linkLeft:   40.0,
+
+  // px at design width — zoom handles scaling at all other sizes
+  titleSize: "20px",
+  descSize:  "16px",
+  linkSize:  "13px",
 } as const;
 
 // ─────────────────────────────────────────────────────────────────
-//  TECH ICONS — gray versions from /assets/projects/icons/
+//  TECH ICONS
 // ─────────────────────────────────────────────────────────────────
 const PI = {
   react:      "/assets/projects/icons/react.svg",
@@ -93,7 +93,6 @@ interface ProjectData {
 }
 
 const PROJECTS: ProjectData[] = [
-  // 1 — UNO Game (large, top-left)
   {
     title: "Uno Game",
     desc: {
@@ -110,7 +109,6 @@ const PROJECTS: ProjectData[] = [
     large: true,
     textAlign: "left",
   },
-  // 2 — Mercado Libre (small, top-right upper)
   {
     title: "Mercado Libre",
     desc: {
@@ -127,7 +125,6 @@ const PROJECTS: ProjectData[] = [
     large: false,
     textAlign: "right",
   },
-  // 3 — Dakingo (small, top-right lower)
   {
     title: "Dakingo",
     desc: {
@@ -144,7 +141,6 @@ const PROJECTS: ProjectData[] = [
     large: false,
     textAlign: "left",
   },
-  // 4 — Vinyl music (small, bottom-left upper)
   {
     title: "Vinyl music",
     desc: {
@@ -161,7 +157,6 @@ const PROJECTS: ProjectData[] = [
     large: false,
     textAlign: "right",
   },
-  // 5 — Mercado Libre (small, bottom-left lower)
   {
     title: "Mercado Libre",
     desc: {
@@ -178,7 +173,6 @@ const PROJECTS: ProjectData[] = [
     large: false,
     textAlign: "left",
   },
-  // 6 — OralDentalGroup (large, bottom-right)
   {
     title: "OralDentalGroup",
     desc: {
@@ -204,6 +198,12 @@ const ROW_STAGGER = [0, 100, 200];
 
 // ─────────────────────────────────────────────────────────────────
 //  PROJECT CARD
+//
+//  Each card watches its own rendered width via ResizeObserver.
+//  It applies CSS zoom = renderedWidth / designWidth to its inner
+//  content div. The outer wrapper stays w-full (responsive layout).
+//  This means the card ALWAYS looks identical to desktop, just
+//  smaller — fonts, icons, link position all scale together.
 // ─────────────────────────────────────────────────────────────────
 function ProjectCard({
   p,
@@ -220,107 +220,115 @@ function ProjectCard({
   const delayStyle = anim === "entering" ? { animationDelay: `${delay}ms` } : undefined;
   const animClass = anim === "entering" ? "animate-fade-in-up" : "opacity-0";
 
+  // Outer div tracks rendered width; inner div gets zoomed accordingly
+  const outerRef = useRef<HTMLDivElement>(null);
+  const [zoom, setZoom] = useState(1);
+
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    const obs = new ResizeObserver(([entry]) => {
+      setZoom(Math.min(1, entry.contentRect.width / c.designWidth));
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [c.designWidth]);
+
   return (
-    <div className={`relative w-full ${animClass}`} style={delayStyle}>
+    // Outer: responsive width, holds the zoom observer
+    <div ref={outerRef} className={`w-full ${animClass}`} style={delayStyle}>
+      {/*
+        Inner: fixed at designWidth, zoomed to fit the outer div.
+        Everything inside (SVG, text, icons, link) scales uniformly.
+        CSS zoom affects layout box, so the card collapses correctly.
+      */}
+      <div className="relative" style={{ width: c.designWidth, zoom }}>
 
-      {/* Card SVG — complete visual (image + footer + border all baked in) */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={p.cardSvg}
-        alt={p.title}
-        className="w-full h-auto block select-none pointer-events-none"
-      />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={p.cardSvg}
+          alt={p.title}
+          className="w-full h-auto block select-none pointer-events-none"
+        />
 
-      {/* ── Title + Description ─────────────────────────────── */}
-      {/* left-aligned  → anchored from card LEFT  using textLeft  */}
-      {/* right-aligned → anchored from card RIGHT using textRight */}
-      <div
-        className={`absolute flex flex-col gap-[2%] ${
-          p.textAlign === "right" ? "items-end text-right" : "items-start text-left"
-        }`}
-        style={{
-          top:   `${c.textTop}%`,
-          width: `${c.textW}%`,
-          ...(p.textAlign === "right"
-            ? { right: `${c.textRight}%` }
-            : { left:  `${c.textLeft}%`  }),
-        }}
-      >
-        <p className="m-0 font-bold text-black leading-tight" style={{ fontSize: c.titleSize }}>
-          {p.title}
-        </p>
-        <p className="m-0 font-extralight text-black leading-[1.2]" style={{ fontSize: c.descSize }}>
-          {p.desc.pre[lang]}
-          {p.desc.bold && (
-            <strong className="font-bold font-big-shoulders-stencil" style={{ color: p.desc.bold.color }}>
-              {p.desc.bold.text[lang]}
-            </strong>
-          )}
-          {p.desc.post[lang]}
-        </p>
+        {/* ── Title + Description ── */}
+        <div
+          className={`absolute flex flex-col gap-[2%] ${
+            p.textAlign === "right" ? "items-end text-right" : "items-start text-left"
+          }`}
+          style={{
+            top:   `${c.textTop}%`,
+            width: `${c.textW}%`,
+            ...(p.textAlign === "right"
+              ? { right: `${c.textRight}%` }
+              : { left:  `${c.textLeft}%`  }),
+          }}
+        >
+          <p className="m-0 font-bold text-black leading-tight" style={{ fontSize: c.titleSize }}>
+            {p.title}
+          </p>
+          <p className="m-0 font-extralight text-black leading-[1.2]" style={{ fontSize: c.descSize }}>
+            {p.desc.pre[lang]}
+            {p.desc.bold && (
+              <strong className="font-bold font-big-shoulders-stencil" style={{ color: p.desc.bold.color }}>
+                {p.desc.bold.text[lang]}
+              </strong>
+            )}
+            {p.desc.post[lang]}
+          </p>
+        </div>
+
+        {/* ── Tech icons ── */}
+        <div
+          className={`absolute flex items-center gap-[2%] ${
+            p.textAlign === "right" ? "justify-end" : "justify-start"
+          }`}
+          style={{
+            top:   `${c.iconsTop}%`,
+            width: `${c.iconsW}%`,
+            ...(p.textAlign === "right"
+              ? { right: `${c.iconsRight}%` }
+              : { left:  `${c.iconsLeft}%`  }),
+          }}
+        >
+          {p.icons.map((icon) => (
+            <div key={icon} className="relative shrink-0" style={{ width: c.iconSize, aspectRatio: "1" }}>
+              <Image src={icon} alt="" fill className="object-contain" />
+            </div>
+          ))}
+        </div>
+
+        {/* ── "Ver en GitHub" ── */}
+        <a
+          href={p.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute font-normal text-black underline decoration-black hover:opacity-70 transition-opacity whitespace-nowrap"
+          style={{ top: `${c.linkTop}%`, left: `${c.linkLeft}%`, fontSize: c.linkSize }}
+        >
+          {t.projects.github[lang]}
+        </a>
+
       </div>
-
-      {/* ── Tech icons ────────────────────────────────────────── */}
-      {/* same logic: left-aligned uses iconsLeft, right-aligned uses iconsRight */}
-      <div
-        className={`absolute flex items-center gap-[2%] ${
-          p.textAlign === "right" ? "justify-end" : "justify-start"
-        }`}
-        style={{
-          top:   `${c.iconsTop}%`,
-          width: `${c.iconsW}%`,
-          ...(p.textAlign === "right"
-            ? { right: `${c.iconsRight}%` }
-            : { left:  `${c.iconsLeft}%`  }),
-        }}
-      >
-        {p.icons.map((icon) => (
-          <div key={icon} className="relative shrink-0" style={{ width: c.iconSize, aspectRatio: "1" }}>
-            <Image src={icon} alt="" fill className="object-contain" />
-          </div>
-        ))}
-      </div>
-
-      {/* ── "Ver en GitHub" — tune linkTop/linkLeft in CARD_LG or CARD_SM ── */}
-      <a
-        href={p.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute font-normal text-black underline decoration-black hover:opacity-70 transition-opacity whitespace-nowrap"
-        style={{ top: `${c.linkTop}%`, left: `${c.linkLeft}%`, fontSize: c.linkSize }}
-      >
-        {t.projects.github[lang]}
-      </a>
-
     </div>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────
 //  SECTION
-//
-//  Animation logic:
-//  • Title + Row 1 share one observer → animate together on enter
-//  • Row 2 has its own observer → animates when scrolled into view
-//  • NO per-row exit animation. Instead, a section-level observer
-//    resets everything to "idle" only when the section is fully
-//    out of the viewport.
-//  This prevents the title from flickering as you scroll within
-//  the section, and makes Row 2 animate cleanly on scroll-down.
 // ─────────────────────────────────────────────────────────────────
 export function ProjectsSection() {
   const { lang } = useLang();
   const proj = t.projects;
 
-  const sectionRef = useRef<HTMLElement>(null); // section exit → reset all
-  const row1Ref    = useRef<HTMLDivElement>(null); // title + row1 enter
-  const row2Ref    = useRef<HTMLDivElement>(null); // row2 enter
+  const sectionRef = useRef<HTMLElement>(null);
+  const row1Ref    = useRef<HTMLDivElement>(null);
+  const row2Ref    = useRef<HTMLDivElement>(null);
 
   const [row1Anim, setRow1Anim] = useState<AnimState>("idle");
   const [row2Anim, setRow2Anim] = useState<AnimState>("idle");
 
   useEffect(() => {
-    // ── Section exit: reset everything once section is fully out of view ──
     const sectionObs = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) {
@@ -330,14 +338,10 @@ export function ProjectsSection() {
       },
       { threshold: 0 },
     );
-
-    // ── Row 1 + header enter ─────────────────────────────────────────────
     const row1Obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setRow1Anim("entering"); },
       { threshold: 0.1, rootMargin: "0px 0px -10% 0px" },
     );
-
-    // ── Row 2 enter ──────────────────────────────────────────────────────
     const row2Obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setRow2Anim("entering"); },
       { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
@@ -353,7 +357,6 @@ export function ProjectsSection() {
   return (
     <section ref={sectionRef} id="proyectos" className="relative w-full overflow-hidden scroll-mt-16 lg:scroll-mt-[110px]">
 
-      {/* Background — 100% opacity */}
       <Image
         src="/assets/projects/projects-section-bg.png"
         alt=""
@@ -363,33 +366,30 @@ export function ProjectsSection() {
 
       <div className="relative z-10 w-full max-w-[960px] mx-auto px-6 sm:px-10 lg:px-[60px] py-[60px] lg:py-[80px]">
 
-        {/* ── Row 1 ref wraps header + row 1 cards so they share one animation ── */}
         <div ref={row1Ref}>
 
           {/* Section header */}
           <div
-            className={`flex flex-col items-center gap-2 mb-16 lg:mb-24 text-center ${
+            className={`flex flex-col items-center gap-3 mb-16 lg:mb-24 text-center ${
               row1Anim === "entering" ? "animate-fade-in-up" : "opacity-0"
             }`}
           >
-            <p className="m-0 font-extralight text-[#4d4c4c] leading-none" style={{ fontSize: "clamp(17px, 1.5vw, 19px)" }}>
+            <p className="m-0 font-extralight text-[#4d4c4c] leading-none" style={{ fontSize: "clamp(17px, 1.8vw, 22px)" }}>
               - {proj.subtitle[lang]} -
             </p>
             <h2 className="m-0 leading-none">
-              <span className="font-normal text-[#4d4c4c]" style={{ fontSize: "clamp(34px, 4vw, 54px)", WebkitTextStroke: "1px #000" }}>
+              <span className="font-normal text-[#4d4c4c]" style={{ fontSize: "clamp(36px, 4.5vw, 58px)", WebkitTextStroke: "1px #000" }}>
                 {proj.titlePre[lang]}{" "}
               </span>
-              <span className="font-normal text-[#fcd116]" style={{ fontSize: "clamp(34px, 4vw, 54px)", WebkitTextStroke: "1px #000" }}>
+              <span className="font-normal text-[#fcd116]" style={{ fontSize: "clamp(36px, 4.5vw, 58px)", WebkitTextStroke: "1px #000" }}>
                 {proj.titleHighlight[lang]}
               </span>
             </h2>
           </div>
 
-          {/* ── Row 1 cards ── */}
-          {/*
-           *  Desktop: [Card 1 large — 58%] | [Card 2 / Card 3 stacked — flex-1]
-           *  lg:items-center → large card is vertically centered between the two smalls
-           *  Mobile: Card 1 full width, then Card 2+3 side-by-side
+          {/* ── Row 1 ──
+           *  Desktop: [Card 1 large — 58%] | [Card 2 / Card 3 stacked]
+           *  Mobile:  Card 1 full-width → Card 2 + Card 3 side-by-side below
            */}
           <div className="flex flex-col lg:flex-row gap-5 lg:gap-8 lg:items-center">
             <div className="w-full lg:w-[58%] lg:shrink-0">
@@ -405,13 +405,11 @@ export function ProjectsSection() {
             </div>
           </div>
 
-        </div>{/* end row1Ref */}
+        </div>
 
-        {/* ── Row 2 ── */}
-        {/*
-         *  Desktop: [Card 4 / Card 5 stacked — 42%] | [Card 6 large — flex-1]
-         *  lg:items-center → large card is vertically centered between the two smalls
-         *  Mobile: Card 6 full width (order-1), then Card 4+5 side-by-side (order-2)
+        {/* ── Row 2 ──
+         *  Desktop: [Card 4 / Card 5 stacked — 42%] | [Card 6 large]
+         *  Mobile:  Card 6 full-width (order-1) → Card 4 + Card 5 side-by-side (order-2)
          */}
         <div ref={row2Ref} className="flex flex-col lg:flex-row gap-5 lg:gap-8 lg:items-center mt-5 lg:mt-8">
 
