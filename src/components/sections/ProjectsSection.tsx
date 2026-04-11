@@ -58,7 +58,7 @@ const CARD_SM = {
 
   // px at design width — zoom handles scaling at all other sizes
   titleSize: "20px",
-  descSize:  "16px",
+  descSize:  "15.5px",
   linkSize:  "13px",
 } as const;
 

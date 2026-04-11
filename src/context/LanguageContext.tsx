@@ -113,4 +113,12 @@ export const t = {
     github:         { es: "Ver en GitHub",                                 en: "View on GitHub"                        },
     web:            { es: "Ver web",                                       en: "View website"                          },
   },
+  testimonials: {
+    titleHighlight: { es: "Testimonios",                                   en: "Testimonials"                          },
+    titlePost:      { es: "de usuario",                                    en: "from users"                            },
+    subtitle: {
+      es: "Lo que dicen las personas con las que he trabajado. Al final del día, los resultados hablan por sí solos.",
+      en: "What the people I've worked with have to say. At the end of the day, results speak for themselves.",
+    },
+  },
 } as const;

@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/sections/HeroSection";
 import { SkillsSection } from "@/components/sections/SkillsSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ParallaxProvider } from "@/components/ui/ParallaxProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 
@@ -31,6 +32,7 @@ export default function Home() {
             />
             <ProjectsSection />
           </section>
+          <TestimonialsSection />
         </div>
       </main>
     </LanguageProvider>
