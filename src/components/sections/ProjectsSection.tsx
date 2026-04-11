@@ -32,9 +32,9 @@ const CARD_LG = {
 
   // ── Font sizes ───────────────────────────────────────────────
   // vw-based: scales from mobile min → desktop max progressively
-  titleSize: "clamp(24px, 2.0vw, 26px)",  // 390px→22px  | 1280px→26px
-  descSize:  "clamp(19px, 1.6vw, 21px)",  // 390px→17px  | 1280px→21px
-  linkSize:  "clamp(17px, 1.1vw, 17px)",  // 390px→12px  | 1280px→17px
+  titleSize: "clamp(22px, 2.0vw, 26px)",  // 390px→22px  | 1280px→26px
+  descSize:  "clamp(17px, 1.6vw, 21px)",  // 390px→17px  | 1280px→21px
+  linkSize:  "clamp(15px, 1.1vw, 17px)",  // 390px→12px  | 1280px→17px
 } as const;
 
 const CARD_SM = {
