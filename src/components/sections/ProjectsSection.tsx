@@ -17,7 +17,7 @@ const CARD_LG = {
   textTop:    50.5,  // % from card top  → push down to clear the image
   textLeft:    10.5,  // % from card left → used when textAlign="left"
   textRight:   10.5,  // % from card right → used when textAlign="right"
-  textW:      80.0,  // % width of text column
+  textW:      81.0,  // % width of text column
 
   // ── Tech icons ───────────────────────────────────────────────
   iconsTop:   75.0,  // % from card top  → above footer (~71%). Increase to push lower
@@ -31,9 +31,10 @@ const CARD_LG = {
   linkLeft:   42.0,  // % from card left → align with the GitHub circle
 
   // ── Font sizes ───────────────────────────────────────────────
-  titleSize: "clamp(25px, 1.8vw, 26px)",
-  descSize:  "clamp(20px, 1.3vw, 19px)",
-  linkSize:  "clamp(16px,  1.1vw, 17px)",
+  // vw-based: scales from mobile min → desktop max progressively
+  titleSize: "clamp(24px, 2.0vw, 26px)",  // 390px→22px  | 1280px→26px
+  descSize:  "clamp(19px, 1.6vw, 21px)",  // 390px→17px  | 1280px→21px
+  linkSize:  "clamp(17px, 1.1vw, 17px)",  // 390px→12px  | 1280px→17px
 } as const;
 
 const CARD_SM = {
@@ -55,9 +56,10 @@ const CARD_SM = {
   linkLeft:   40.0,  // % from card left
 
   // ── Font sizes ───────────────────────────────────────────────
-  titleSize: "clamp(13px, 1.2vw, 18px)",
-  descSize:  "clamp(15px,  0.9vw, 13px)",
-  linkSize:  "clamp(8px,  0.9vw, 13px)",
+  // vw-based: scales from mobile min → desktop max progressively
+  titleSize: "clamp(15px, 1.4vw, 20px)",  // 390px→18px  | 1280px→20px
+  descSize:  "clamp(10px, 1.2vw, 15px)",  // 390px→13px  | 1280px→16px
+  linkSize:  "clamp(10px, 0.9vw, 13px)",  // 390px→11px  | 1280px→13px
 } as const;
 
 // ─────────────────────────────────────────────────────────────────
@@ -146,7 +148,7 @@ const PROJECTS: ProjectData[] = [
   {
     title: "Vinyl music",
     desc: {
-      pre:  { es: "Simulación de un ", en: "Simulation of a " },
+      pre:  { es: "Simulación ", en: "Simulation" },
       bold: { text: { es: "tocadiscos de vinilo", en: "vinyl record player" }, color: "#c8191e" },
       post: {
         es: " implementando patrones de software y estructuras de datos.",
@@ -349,7 +351,7 @@ export function ProjectsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="proyectos" className="relative w-full overflow-hidden">
+    <section ref={sectionRef} id="proyectos" className="relative w-full overflow-hidden scroll-mt-16 lg:scroll-mt-[110px]">
 
       {/* Background — 100% opacity */}
       <Image
@@ -370,14 +372,14 @@ export function ProjectsSection() {
               row1Anim === "entering" ? "animate-fade-in-up" : "opacity-0"
             }`}
           >
-            <p className="m-0 font-extralight text-[#4d4c4c] leading-none" style={{ fontSize: "clamp(13px, 1.5vw, 19px)" }}>
+            <p className="m-0 font-extralight text-[#4d4c4c] leading-none" style={{ fontSize: "clamp(17px, 1.5vw, 19px)" }}>
               - {proj.subtitle[lang]} -
             </p>
             <h2 className="m-0 leading-none">
-              <span className="font-normal text-[#4d4c4c]" style={{ fontSize: "clamp(28px, 4vw, 54px)", WebkitTextStroke: "1px #000" }}>
+              <span className="font-normal text-[#4d4c4c]" style={{ fontSize: "clamp(34px, 4vw, 54px)", WebkitTextStroke: "1px #000" }}>
                 {proj.titlePre[lang]}{" "}
               </span>
-              <span className="font-normal text-[#fcd116]" style={{ fontSize: "clamp(28px, 4vw, 54px)", WebkitTextStroke: "1px #000" }}>
+              <span className="font-normal text-[#fcd116]" style={{ fontSize: "clamp(34px, 4vw, 54px)", WebkitTextStroke: "1px #000" }}>
                 {proj.titleHighlight[lang]}
               </span>
             </h2>

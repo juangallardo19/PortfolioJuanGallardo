@@ -55,7 +55,7 @@ export function AboutSection() {
     <section
       ref={sectionRef}
       id="acerca"
-      className="relative flex items-center justify-center w-full overflow-hidden"
+      className="relative flex items-center justify-center w-full overflow-hidden scroll-mt-16 lg:scroll-mt-[110px]"
       style={{ minHeight: "max(920px, 110svh)" }}
     >
       <Image src="/assets/about/about-section-bg.png" alt="" fill className="object-cover pointer-events-none" />
@@ -71,10 +71,10 @@ export function AboutSection() {
         >
           <div className="flex flex-col gap-4">
             <h2 className="m-0 leading-[1.0]">
-              <span className="text-[clamp(29px,3.8vw,51px)] font-normal text-[#4d4c4c]" style={{ WebkitTextStroke: "1px #000" }}>
+              <span className="text-[clamp(34px,3.8vw,51px)] font-normal text-[#4d4c4c]" style={{ WebkitTextStroke: "1px #000" }}>
                 {about.titlePre[lang]}{" "}
               </span>
-              <span className="text-[clamp(29px,3.8vw,51px)] font-normal text-[#fcd116]" style={{ WebkitTextStroke: "1px #000" }}>
+              <span className="text-[clamp(34px,3.8vw,51px)] font-normal text-[#fcd116]" style={{ WebkitTextStroke: "1px #000" }}>
                 {about.titleHighlight[lang]}
               </span>
             </h2>

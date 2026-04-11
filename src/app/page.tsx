@@ -17,12 +17,13 @@ export default function Home() {
         <div className="pt-[64px] lg:pt-[30px]">
           <HeroSection />
           <SkillsSection />
-          <div className="h-[60px] lg:h-[80px]" />
           {/*
             About + Projects share one dot-pattern section.
             A centered separator line (max 640px) divides them.
           */}
           <section className="dot-pattern relative w-full">
+            {/* Spacer inside dot-pattern so the dots cover this gap too */}
+            <div className="h-[60px] lg:h-[80px]" />
             <AboutSection />
             {/* Separator — 640px centered, not full-width */}
             <div className="relative z-10 mx-auto my-[60px] lg:my-[80px] h-[1px] bg-[#4d4c4c]"

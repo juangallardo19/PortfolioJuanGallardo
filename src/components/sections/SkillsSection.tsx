@@ -52,7 +52,7 @@ export function SkillsSection() {
     <section
       ref={sectionRef}
       id="habilidades"
-      className="dot-pattern-green relative flex items-center justify-center w-full overflow-hidden"
+      className="dot-pattern-green relative flex items-center justify-center w-full overflow-hidden scroll-mt-16 lg:scroll-mt-[110px]"
       style={{ minHeight: "max(920px, 110svh)" }}
     >
       {/* Background image — 75% opacity per design */}
@@ -163,13 +163,13 @@ export function SkillsSection() {
               {/* Title — Big Shoulders Text Bold (no stencil), 48px, 20px top+bottom padding */}
               <h2 className="m-0 py-4 leading-[1.0] font-normal text-right w-full">
                 <span
-                  className="text-[clamp(26px,3.5vw,48px)] font-normal text-[#4d4c4c]"
+                  className="text-[clamp(34px,3.5vw,48px)] font-normal text-[#4d4c4c]"
                   style={{ WebkitTextStroke: "1px #000000" }}
                 >
                   {skills.titlePre[lang]}{" "}
                 </span>
                 <span
-                  className="text-[clamp(26px,3.5vw,48px)] font-normal text-skills-green"
+                  className="text-[clamp(34px,3.5vw,48px)] font-normal text-skills-green"
                   style={{ WebkitTextStroke: "1px #000000" }}
                 >
                   {skills.titleHighlight[lang]}
