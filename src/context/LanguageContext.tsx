@@ -111,5 +111,6 @@ export const t = {
     titlePre:       { es: "Estos son",                                     en: "These are"                             },
     titleHighlight: { es: "Mis proyectos",                                 en: "My projects"                           },
     github:         { es: "Ver en GitHub",                                 en: "View on GitHub"                        },
+    web:            { es: "Ver web",                                       en: "View website"                          },
   },
 } as const;

@@ -74,6 +74,8 @@ const PI = {
   python:     "/assets/projects/icons/python.svg",
   git:        "/assets/projects/icons/git.svg",
   css3:       "/assets/projects/icons/css3.svg",
+  postgres:   "/assets/projects/icons/postgres.svg",
+  wordpress:  "/assets/projects/icons/wordpress.svg",
 } as const;
 
 interface DescPart {
@@ -83,13 +85,14 @@ interface DescPart {
 }
 
 interface ProjectData {
-  title:     string;
-  desc:      DescPart;
-  icons:     string[];
-  github:    string;
-  cardSvg:   string;
-  large:     boolean;
-  textAlign: "left" | "right";
+  title:      string;
+  desc:       DescPart;
+  icons:      string[];
+  link:       string;
+  linkType:   "github" | "web";  // "github" → "Ver en GitHub", "web" → "Ver web"
+  cardSvg:    string;
+  large:      boolean;
+  textAlign:  "left" | "right";
 }
 
 const PROJECTS: ProjectData[] = [
@@ -103,8 +106,9 @@ const PROJECTS: ProjectData[] = [
         en: " recreated using software patterns, databases, and real-time gameplay.",
       },
     },
-    icons: [PI.java, PI.react, PI.typescript],
-    github: "https://github.com/juangallardo19",
+    icons: [PI.java, PI.react, PI.typescript, PI.postgres],
+    link: "https://github.com/juangallardo19",
+    linkType: "github",
     cardSvg: "/assets/projects/Card 1.svg",
     large: true,
     textAlign: "left",
@@ -120,7 +124,8 @@ const PROJECTS: ProjectData[] = [
       },
     },
     icons: [PI.git, PI.html5, PI.css3],
-    github: "https://github.com/juangallardo19",
+    link: "https://github.com/juangallardo19",
+    linkType: "github",
     cardSvg: "/assets/projects/Card 2.svg",
     large: false,
     textAlign: "right",
@@ -136,7 +141,8 @@ const PROJECTS: ProjectData[] = [
       },
     },
     icons: [PI.react, PI.tailwind],
-    github: "https://github.com/juangallardo19",
+    link: "https://github.com/juangallardo19",
+    linkType: "github",
     cardSvg: "/assets/projects/Card 3.svg",
     large: false,
     textAlign: "left",
@@ -152,7 +158,8 @@ const PROJECTS: ProjectData[] = [
       },
     },
     icons: [PI.react, PI.css3, PI.python],
-    github: "https://github.com/juangallardo19",
+    link: "https://github.com/juangallardo19",
+    linkType: "github",
     cardSvg: "/assets/projects/Card 4.svg",
     large: false,
     textAlign: "right",
@@ -168,7 +175,8 @@ const PROJECTS: ProjectData[] = [
       },
     },
     icons: [PI.git, PI.html5, PI.css3],
-    github: "https://github.com/juangallardo19",
+    link: "https://github.com/juangallardo19",
+    linkType: "github",
     cardSvg: "/assets/projects/Card 5.svg",
     large: false,
     textAlign: "left",
@@ -183,8 +191,9 @@ const PROJECTS: ProjectData[] = [
         en: " in WordPress, focused on modern design and intuitive navigation.",
       },
     },
-    icons: [PI.react, PI.css3, PI.python],
-    github: "https://github.com/juangallardo19",
+    icons: [PI.css3, PI.wordpress],
+    link: "https://oraldentalgroup.com",
+    linkType: "web",
     cardSvg: "/assets/projects/Card 6.svg",
     large: true,
     textAlign: "right",
@@ -298,15 +307,15 @@ function ProjectCard({
           ))}
         </div>
 
-        {/* ── "Ver en GitHub" ── */}
+        {/* ── Link (GitHub o web) ── */}
         <a
-          href={p.github}
+          href={p.link}
           target="_blank"
           rel="noopener noreferrer"
           className="absolute font-normal text-black underline decoration-black hover:opacity-70 transition-opacity whitespace-nowrap"
           style={{ top: `${c.linkTop}%`, left: `${c.linkLeft}%`, fontSize: c.linkSize }}
         >
-          {t.projects.github[lang]}
+          {p.linkType === "web" ? t.projects.web[lang] : t.projects.github[lang]}
         </a>
 
       </div>

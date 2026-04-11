@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLang, t } from "@/context/LanguageContext";
-import { BrushBorder } from "@/components/ui/BrushBorder";
 
 const NAV_HREFS = ["#inicio", "#habilidades", "#acerca", "#proyectos", "#testimonios", "#experiencia", "#contacto"];
 
@@ -31,8 +30,9 @@ export function Navbar() {
           className="absolute inset-0 w-full h-full pointer-events-none select-none"
         />
 
-        <div className="relative z-10 flex items-center h-full pl-[80px] pr-[70px]">
-          {/* Logo */}
+        <div className="relative z-10 flex items-center h-full" style={{ marginTop: "-3px", paddingLeft: "clamp(20px, 5.5vw, 80px)", paddingRight: "clamp(20px, 5vw, 70px)" }}>
+
+          {/* ── Izquierda: Logo ── */}
           <Link href="#inicio" className="shrink-0">
             <Image
               src="/assets/hero/logo.png"
@@ -40,99 +40,95 @@ export function Navbar() {
               width={155}
               height={60}
               priority
+              className="w-[clamp(90px,11vw,155px)] h-auto"
             />
           </Link>
 
-          <div className="flex-1" />
-
-          {/* Nav links + buttons */}
-          <div className="flex items-center shrink-0" style={{ marginTop: "-3px" }}>
-            <div className="flex items-center gap-[30px]">
+          {/* ── Centro: Nav links ── */}
+          <div className="flex-1 flex items-center justify-center overflow-hidden pl-[8%] pr-4">
+            <div className="flex items-center" style={{ gap: "clamp(2px, 0.9vw, 14px)" }}>
               {labels.map((label, i) => (
                 <Link
                   key={NAV_HREFS[i]}
                   href={NAV_HREFS[i]}
-                  className="font-bold text-[16px] text-black whitespace-nowrap hover:text-black/50 transition-colors leading-none"
-                  style={{ fontFamily: "var(--font-big-shoulders)" }}
+                  className="font-bold text-black whitespace-nowrap px-[6px] py-[4px] rounded-[6px] hover:bg-black/10 transition-all leading-none"
+                  style={{ fontFamily: "var(--font-big-shoulders)", fontSize: "clamp(11px, 1.05vw, 16px)" }}
                 >
                   {label}
                 </Link>
               ))}
             </div>
+          </div>
 
-            <div className="w-[60px]" />
+          {/* ── Derecha: Toggle + CV ── */}
+          <div className="shrink-0 flex items-center" style={{ gap: "clamp(8px, 1vw, 16px)" }}>
 
             {/* Language Toggle */}
-            <BrushBorder fill="#c8ff00">
-              <div className="flex items-center px-[6px] py-[5px] gap-[4px]">
-                <button
-                  onClick={() => setLang("es")}
-                  className={`flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] transition-all ${
-                    lang === "es" ? "bg-black" : "hover:bg-black/10"
-                  }`}
+            <div
+              className="relative flex items-center px-[8px] py-[6px]"
+              style={{ backgroundImage: "url('/assets/hero/toggle-container.svg')", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" }}
+            >
+              <div
+                className="absolute inset-y-[6px] rounded-[18px] bg-black pointer-events-none transition-all duration-300 ease-in-out"
+                style={{ left: lang === "es" ? "8px" : "50%", right: lang === "en" ? "8px" : "50%" }}
+              />
+              <button
+                onClick={() => setLang("es")}
+                className="relative z-10 flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
+              >
+                <span className="overflow-hidden rounded-full w-[22px] h-[22px] flex flex-col shrink-0">
+                  <span className="bg-[#fdcf16] w-full" style={{ height: "50%" }} />
+                  <span className="bg-[#033f94] w-full" style={{ height: "25%" }} />
+                  <span className="bg-[#c8191e] w-full" style={{ height: "25%" }} />
+                </span>
+                <span
+                  className={`font-bold text-[14px] leading-none transition-colors duration-300 ${lang === "es" ? "text-[#c8ff00]" : "text-[#737373]"}`}
+                  style={{ fontFamily: "var(--font-big-shoulders)" }}
                 >
-                  <span className="overflow-hidden rounded-full w-[22px] h-[22px] flex flex-col shrink-0">
-                    <span className="bg-[#fdcf16] w-full" style={{ height: "50%" }} />
-                    <span className="bg-[#033f94] w-full" style={{ height: "25%" }} />
-                    <span className="bg-[#c8191e] w-full" style={{ height: "25%" }} />
+                  ES
+                </span>
+              </button>
+              <button
+                onClick={() => setLang("en")}
+                className="relative z-10 flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
+              >
+                <span className="relative overflow-hidden rounded-full w-[22px] h-[22px] bg-[#012169] shrink-0">
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <span className="absolute bg-white w-full h-[8px]" />
+                    <span className="absolute bg-white h-full w-[8px]" />
+                    <span className="absolute bg-[#C8102E] w-full h-[4px]" />
+                    <span className="absolute bg-[#C8102E] h-full w-[4px]" />
                   </span>
-                  <span
-                    className={`font-bold text-[14px] leading-none ${
-                      lang === "es" ? "text-[#c8ff00]" : "text-[#737373]"
-                    }`}
-                    style={{ fontFamily: "var(--font-big-shoulders)" }}
-                  >
-                    ES
-                  </span>
-                </button>
-
-                <button
-                  onClick={() => setLang("en")}
-                  className={`flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] transition-all ${
-                    lang === "en" ? "bg-black" : "hover:bg-black/10"
-                  }`}
+                </span>
+                <span
+                  className={`font-bold text-[14px] leading-none transition-colors duration-300 ${lang === "en" ? "text-[#c8ff00]" : "text-[#737373]"}`}
+                  style={{ fontFamily: "var(--font-big-shoulders)" }}
                 >
-                  <span className="relative overflow-hidden rounded-full w-[22px] h-[22px] bg-[#012169] shrink-0">
-                    <span className="absolute inset-0 flex items-center justify-center">
-                      <span className="absolute bg-white w-full h-[8px]" />
-                      <span className="absolute bg-white h-full w-[8px]" />
-                      <span className="absolute bg-[#C8102E] w-full h-[4px]" />
-                      <span className="absolute bg-[#C8102E] h-full w-[4px]" />
-                    </span>
-                  </span>
-                  <span
-                    className={`font-bold text-[14px] leading-none ${
-                      lang === "en" ? "text-[#c8ff00]" : "text-[#737373]"
-                    }`}
-                    style={{ fontFamily: "var(--font-big-shoulders)" }}
-                  >
-                    EN
-                  </span>
-                </button>
-              </div>
-            </BrushBorder>
-
-            <div className="w-[30px]" />
+                  EN
+                </span>
+              </button>
+            </div>
 
             {/* CV Button */}
-            <BrushBorder
-              fill="#c8ff00"
-              className="hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+            <a
+              href="/assets/cv.pdf"
+              download
+              className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:brightness-110 active:scale-95 transition-all"
+              style={{
+                backgroundImage: "url('/assets/hero/download-cv.svg')",
+                backgroundSize: "100% 100%",
+                backgroundRepeat: "no-repeat",
+                fontFamily: "var(--font-big-shoulders)",
+              }}
             >
-              <a
-                href="/assets/cv.pdf"
-                download
-                className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none"
-                style={{ fontFamily: "var(--font-big-shoulders)" }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                  <polyline points="7 10 12 15 17 10"/>
-                  <line x1="12" y1="15" x2="12" y2="3"/>
-                </svg>
-                {t.nav.cv[lang]}
-              </a>
-            </BrushBorder>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              {t.nav.cv[lang]}
+            </a>
+
           </div>
         </div>
       </div>
@@ -192,7 +188,7 @@ export function Navbar() {
                 key={NAV_HREFS[i]}
                 href={NAV_HREFS[i]}
                 onClick={() => setOpen(false)}
-                className="font-bold text-[22px] text-black py-3 border-b border-black/10 last:border-0 hover:text-black/50 transition-colors leading-none"
+                className="font-bold text-[22px] text-black py-3 px-2 rounded-[6px] border-b border-black/10 last:border-0 hover:bg-black/10 transition-all leading-none"
                 style={{ fontFamily: "var(--font-big-shoulders)" }}
               >
                 {labels[i]}
@@ -202,13 +198,19 @@ export function Navbar() {
 
           {/* Language + CV in mobile menu */}
           <div className="flex items-center justify-between px-5 py-4 border-t border-black/10">
-            {/* Language Toggle - pill style */}
-            <div className="flex items-center gap-1 bg-black/10 rounded-full px-1 py-1">
+            {/* Language Toggle */}
+            <div
+              className="relative flex items-center px-[8px] py-[6px]"
+              style={{ backgroundImage: "url('/assets/hero/toggle-container.svg')", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" }}
+            >
+              {/* Sliding pill */}
+              <div
+                className="absolute inset-y-[6px] rounded-[18px] bg-black pointer-events-none transition-all duration-300 ease-in-out"
+                style={{ left: lang === "es" ? "8px" : "50%", right: lang === "en" ? "8px" : "50%" }}
+              />
               <button
                 onClick={() => setLang("es")}
-                className={`flex gap-[6px] items-center justify-center px-3 py-2 rounded-full transition-all ${
-                  lang === "es" ? "bg-black" : "hover:bg-black/10"
-                }`}
+                className="relative z-10 flex gap-[6px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
               >
                 <span className="overflow-hidden rounded-full w-[20px] h-[20px] flex flex-col shrink-0">
                   <span className="bg-[#fdcf16] w-full" style={{ height: "50%" }} />
@@ -216,9 +218,7 @@ export function Navbar() {
                   <span className="bg-[#c8191e] w-full" style={{ height: "25%" }} />
                 </span>
                 <span
-                  className={`font-bold text-[14px] leading-none ${
-                    lang === "es" ? "text-[#c8ff00]" : "text-[#737373]"
-                  }`}
+                  className={`font-bold text-[14px] leading-none transition-colors duration-300 ${lang === "es" ? "text-[#c8ff00]" : "text-[#737373]"}`}
                   style={{ fontFamily: "var(--font-big-shoulders)" }}
                 >
                   ES
@@ -227,9 +227,7 @@ export function Navbar() {
 
               <button
                 onClick={() => setLang("en")}
-                className={`flex gap-[6px] items-center justify-center px-3 py-2 rounded-full transition-all ${
-                  lang === "en" ? "bg-black" : "hover:bg-black/10"
-                }`}
+                className="relative z-10 flex gap-[6px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
               >
                 <span className="relative overflow-hidden rounded-full w-[20px] h-[20px] bg-[#012169] shrink-0">
                   <span className="absolute inset-0 flex items-center justify-center">
@@ -240,9 +238,7 @@ export function Navbar() {
                   </span>
                 </span>
                 <span
-                  className={`font-bold text-[14px] leading-none ${
-                    lang === "en" ? "text-[#c8ff00]" : "text-[#737373]"
-                  }`}
+                  className={`font-bold text-[14px] leading-none transition-colors duration-300 ${lang === "en" ? "text-[#c8ff00]" : "text-[#737373]"}`}
                   style={{ fontFamily: "var(--font-big-shoulders)" }}
                 >
                   EN
@@ -250,12 +246,17 @@ export function Navbar() {
               </button>
             </div>
 
-            {/* CV Button — black on lime bg so it's visible */}
+            {/* CV Button */}
             <a
               href="/assets/cv.pdf"
               download
-              className="flex items-center gap-[6px] bg-black font-bold text-[16px] text-[#c8ff00] px-5 py-2.5 rounded-full hover:bg-black/80 active:scale-95 transition-all leading-none whitespace-nowrap"
-              style={{ fontFamily: "var(--font-big-shoulders)" }}
+              className="flex items-center gap-[8px] px-[20px] py-[10px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none active:scale-95 transition-all"
+              style={{
+                backgroundImage: "url('/assets/hero/download-cv.svg')",
+                backgroundSize: "100% 100%",
+                backgroundRepeat: "no-repeat",
+                fontFamily: "var(--font-big-shoulders)",
+              }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
