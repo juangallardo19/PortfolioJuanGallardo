@@ -27,7 +27,7 @@ const CARD_LG = {
   iconSize:   "10%", // individual icon size (% of card width)
 
   // ── "Ver en GitHub" link ─────────────────────────────────────
-  linkTop:    87.0,  // % from card top  → inside the colored footer zone
+  linkTop:    86.0,  // % from card top  → inside the colored footer zone
   linkLeft:   42.0,  // % from card left → align with the GitHub circle
 
   // ── Font sizes ───────────────────────────────────────────────
@@ -45,21 +45,21 @@ const CARD_SM = {
   textW:      80.0,  // % width of text column
 
   // ── Tech icons ───────────────────────────────────────────────
-  iconsTop:   75.5,  // % from card top  → near footer (~70%). Increase to push lower
+  iconsTop:   76.5,  // % from card top  → near footer (~70%). Increase to push lower
   iconsLeft:   10.5,  // % from card left  → used when textAlign="left"
   iconsRight:  10.5,  // % from card right → used when textAlign="right"
   iconsW:     83.0,  // % width
   iconSize:   "9%",  // individual icon size
 
   // ── "Ver en GitHub" link ─────────────────────────────────────
-  linkTop:    84.5,  // % from card top
+  linkTop:    84.0,  // % from card top
   linkLeft:   40.0,  // % from card left
 
   // ── Font sizes ───────────────────────────────────────────────
   // vw-based: scales from mobile min → desktop max progressively
-  titleSize: "clamp(15px, 1.4vw, 20px)",  // 390px→18px  | 1280px→20px
-  descSize:  "clamp(10px, 1.2vw, 15px)",  // 390px→13px  | 1280px→16px
-  linkSize:  "clamp(10px, 0.9vw, 13px)",  // 390px→11px  | 1280px→13px
+  titleSize: "clamp(13px, 1.4vw, 20px)",  // 390px→18px  | 1280px→20px
+  descSize:  "clamp(8px, 1.2vw, 15px)",  // 390px→13px  | 1280px→16px
+  linkSize:  "clamp(8px, 0.9vw, 13px)",  // 390px→11px  | 1280px→13px
 } as const;
 
 // ─────────────────────────────────────────────────────────────────
