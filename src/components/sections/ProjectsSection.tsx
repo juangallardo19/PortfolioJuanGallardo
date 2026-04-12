@@ -203,7 +203,7 @@ const PROJECTS: ProjectData[] = [
 // ─────────────────────────────────────────────────────────────────
 
 type AnimState = "idle" | "entering";
-const ROW_STAGGER = [0, 100, 200];
+const ROW_STAGGER = [0, 150, 300];
 
 // ─────────────────────────────────────────────────────────────────
 //  PROJECT CARD
@@ -332,11 +332,9 @@ export function ProjectsSection() {
 
   const sectionRef  = useRef<HTMLElement>(null);
   const row1Ref     = useRef<HTMLDivElement>(null);
-  const row2Ref     = useRef<HTMLDivElement>(null);
   const cards45Ref  = useRef<HTMLDivElement>(null);
 
   const [row1Anim,    setRow1Anim]    = useState<AnimState>("idle");
-  const [row2Anim,    setRow2Anim]    = useState<AnimState>("idle");
   const [cards45Anim, setCards45Anim] = useState<AnimState>("idle");
 
   useEffect(() => {
@@ -344,7 +342,6 @@ export function ProjectsSection() {
       ([entry]) => {
         if (!entry.isIntersecting) {
           setRow1Anim("idle");
-          setRow2Anim("idle");
           setCards45Anim("idle");
         }
       },
@@ -354,22 +351,17 @@ export function ProjectsSection() {
       ([entry]) => { if (entry.isIntersecting) setRow1Anim("entering"); },
       { threshold: 0.1, rootMargin: "0px 0px -10% 0px" },
     );
-    const row2Obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setRow2Anim("entering"); },
-      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
-    );
-    // Cards 4+5 get their own observer so they animate when THEY enter view
+    // Cards 3–6 share one observer (fires when small cards enter view)
     const cards45Obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setCards45Anim("entering"); },
-      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" },
+      { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
     );
 
     if (sectionRef.current)  sectionObs.observe(sectionRef.current);
     if (row1Ref.current)     row1Obs.observe(row1Ref.current);
-    if (row2Ref.current)     row2Obs.observe(row2Ref.current);
     if (cards45Ref.current)  cards45Obs.observe(cards45Ref.current);
 
-    return () => { sectionObs.disconnect(); row1Obs.disconnect(); row2Obs.disconnect(); cards45Obs.disconnect(); };
+    return () => { sectionObs.disconnect(); row1Obs.disconnect(); cards45Obs.disconnect(); };
   }, []);
 
   return (
@@ -429,10 +421,10 @@ export function ProjectsSection() {
          *  Desktop: [Card 4 / Card 5 stacked — 42%] | [Card 6 large]
          *  Mobile:  Card 6 full-width (order-1) → Card 4 + Card 5 side-by-side (order-2)
          */}
-        <div ref={row2Ref} className="flex flex-col lg:flex-row gap-5 lg:gap-8 lg:items-center mt-5 lg:mt-8">
+        <div className="flex flex-col lg:flex-row gap-5 lg:gap-8 lg:items-center mt-5 lg:mt-8">
 
           <div className="w-full lg:flex-1 order-1 lg:order-2">
-            <ProjectCard p={PROJECTS[5]} rowIndex={0} anim={row2Anim} />
+            <ProjectCard p={PROJECTS[5]} rowIndex={2} anim={cards45Anim} />
           </div>
 
           <div ref={cards45Ref} className="w-full lg:w-[42%] lg:shrink-0 flex flex-row lg:flex-col gap-5 lg:gap-8 order-2 lg:order-1">
@@ -443,6 +435,7 @@ export function ProjectsSection() {
               <ProjectCard p={PROJECTS[4]} rowIndex={1} anim={cards45Anim} />
             </div>
           </div>
+          {/* Large card (row 2 right) — animates last, after the two small cards */}
 
         </div>
 

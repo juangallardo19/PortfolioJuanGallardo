@@ -4,6 +4,8 @@ import { SkillsSection } from "@/components/sections/SkillsSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { ExperienceSection } from "@/components/sections/ExperienceSection";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { ParallaxProvider } from "@/components/ui/ParallaxProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 
@@ -31,8 +33,16 @@ export default function Home() {
               style={{ width: "min(640px, calc(100% - 48px))" }}
             />
             <ProjectsSection />
+            {/* Separator after Projects — mirrors the one above */}
+            <div
+              className="relative z-10 mx-auto mt-[60px] lg:mt-[80px] h-[1px] bg-[#4d4c4c]"
+              style={{ width: "min(640px, calc(100% - 48px))" }}
+            />
+            <div className="h-[80px] lg:h-[120px]" />
           </section>
           <TestimonialsSection />
+          <ExperienceSection />
+          <ContactSection />
         </div>
       </main>
     </LanguageProvider>

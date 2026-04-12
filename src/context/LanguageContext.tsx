@@ -121,4 +121,24 @@ export const t = {
       en: "What the people I've worked with have to say. At the end of the day, results speak for themselves.",
     },
   },
+  experience: {
+    titlePre:       { es: "Mi",          en: "My"         },
+    titleHighlight: { es: "Experiencia", en: "Experience" },
+    subtitle:       { es: "- Formación y crecimiento -",  en: "- Formation and growth -" },
+  },
+  contact: {
+    titleHighlight: { es: "Contáctame",                        en: "Contact me"                         },
+    subtitle:       { es: "Cuéntame sobre tu proyecto o idea.", en: "Tell me about your project or idea." },
+    labels: {
+      email:   { es: "Email",           en: "Email"          },
+      name:    { es: "Nombre",          en: "Name"           },
+      message: { es: "Razón / Mensaje", en: "Reason / Message" },
+      send:    { es: "Enviar Mensaje",  en: "Send Message"   },
+    },
+    placeholders: {
+      email:   { es: "tu@email.com",                     en: "your@email.com"              },
+      name:    { es: "Tu nombre completo",               en: "Your full name"              },
+      message: { es: "Cuéntame en qué puedo ayudarte...", en: "Tell me how I can help you..." },
+    },
+  },
 } as const;
