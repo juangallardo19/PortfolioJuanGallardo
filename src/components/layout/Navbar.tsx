@@ -33,7 +33,7 @@ export function Navbar() {
         <div className="relative z-10 flex items-center h-full" style={{ marginTop: "-3px", paddingLeft: "clamp(20px, 5.5vw, 80px)", paddingRight: "clamp(20px, 5vw, 70px)" }}>
 
           {/* ── Izquierda: Logo ── */}
-          <Link href="#inicio" className="shrink-0">
+          <Link href="#inicio" className="shrink-0 animate-bubble-in" style={{ animationDelay: "80ms" }}>
             <Image
               src="/assets/hero/logo.png"
               alt="JPG Logo"
@@ -51,8 +51,8 @@ export function Navbar() {
                 <Link
                   key={NAV_HREFS[i]}
                   href={NAV_HREFS[i]}
-                  className="font-bold text-black whitespace-nowrap px-[6px] py-[4px] rounded-[6px] hover:bg-black/10 transition-all leading-none"
-                  style={{ fontFamily: "var(--font-big-shoulders)", fontSize: "clamp(11px, 1.05vw, 16px)" }}
+                  className="font-bold text-black whitespace-nowrap px-[6px] py-[4px] rounded-[6px] hover:bg-black/10 transition-all leading-none animate-bubble-in"
+                  style={{ fontFamily: "var(--font-big-shoulders)", fontSize: "clamp(11px, 1.05vw, 16px)", animationDelay: `${180 + i * 55}ms` }}
                 >
                   {label}
                 </Link>
@@ -65,8 +65,8 @@ export function Navbar() {
 
             {/* Language Toggle */}
             <div
-              className="relative flex items-center px-[8px] py-[6px]"
-              style={{ backgroundImage: "url('/assets/hero/toggle-container.svg')", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat" }}
+              className="relative flex items-center px-[8px] py-[6px] animate-bubble-in"
+              style={{ backgroundImage: "url('/assets/hero/toggle-container.svg')", backgroundSize: "100% 100%", backgroundRepeat: "no-repeat", animationDelay: "620ms" }}
             >
               <div
                 className="absolute inset-y-[6px] rounded-[18px] bg-black pointer-events-none transition-all duration-300 ease-in-out"
@@ -113,12 +113,13 @@ export function Navbar() {
             <a
               href="/assets/cv.pdf"
               download
-              className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:brightness-110 active:scale-95 transition-all"
+              className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:brightness-110 active:scale-95 transition-all animate-bubble-in"
               style={{
                 backgroundImage: "url('/assets/hero/download-cv.svg')",
                 backgroundSize: "100% 100%",
                 backgroundRepeat: "no-repeat",
                 fontFamily: "var(--font-big-shoulders)",
+                animationDelay: "690ms",
               }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

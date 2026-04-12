@@ -244,7 +244,7 @@ export function TestimonialsSection() {
       ref={sectionRef}
       id="testimonios"
       className="dot-pattern-lime relative flex items-center justify-center w-full overflow-hidden
-                 scroll-mt-16 lg:scroll-mt-[110px] min-h-[480px] lg:min-h-[920px]"
+                 scroll-mt-[90px] lg:scroll-mt-[-60px] min-h-[480px] lg:min-h-[920px]"
     >
       {/* Background image — 25% opacity */}
       <Image
@@ -301,7 +301,7 @@ export function TestimonialsSection() {
           <button
             onClick={goPrev}
             aria-label="Anterior"
-            className="absolute left-[-56px] sm:left-[-64px] lg:left-[-52px] top-1/2 -translate-y-1/2
+            className="absolute left-[-56px] sm:left-[-64px] md:left-[-36px] lg:left-[-52px] top-1/2 -translate-y-1/2
                        z-10 hover:scale-125 active:scale-95 transition-transform duration-200"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -376,7 +376,7 @@ export function TestimonialsSection() {
           <button
             onClick={goNext}
             aria-label="Siguiente"
-            className="absolute right-[-56px] sm:right-[-64px] lg:right-[-52px] top-1/2 -translate-y-1/2
+            className="absolute right-[-56px] sm:right-[-64px] md:right-[-36px] lg:right-[-52px] top-1/2 -translate-y-1/2
                        z-10 hover:scale-125 active:scale-95 transition-transform duration-200"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

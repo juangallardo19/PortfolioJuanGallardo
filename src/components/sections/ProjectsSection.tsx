@@ -251,7 +251,7 @@ function ProjectCard({
         Everything inside (SVG, text, icons, link) scales uniformly.
         CSS zoom affects layout box, so the card collapses correctly.
       */}
-      <div className="relative" style={{ width: c.designWidth, zoom }}>
+      <div className="relative mx-auto" style={{ width: c.designWidth, zoom }}>
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -330,12 +330,14 @@ export function ProjectsSection() {
   const { lang } = useLang();
   const proj = t.projects;
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const row1Ref    = useRef<HTMLDivElement>(null);
-  const row2Ref    = useRef<HTMLDivElement>(null);
+  const sectionRef  = useRef<HTMLElement>(null);
+  const row1Ref     = useRef<HTMLDivElement>(null);
+  const row2Ref     = useRef<HTMLDivElement>(null);
+  const cards45Ref  = useRef<HTMLDivElement>(null);
 
-  const [row1Anim, setRow1Anim] = useState<AnimState>("idle");
-  const [row2Anim, setRow2Anim] = useState<AnimState>("idle");
+  const [row1Anim,    setRow1Anim]    = useState<AnimState>("idle");
+  const [row2Anim,    setRow2Anim]    = useState<AnimState>("idle");
+  const [cards45Anim, setCards45Anim] = useState<AnimState>("idle");
 
   useEffect(() => {
     const sectionObs = new IntersectionObserver(
@@ -343,6 +345,7 @@ export function ProjectsSection() {
         if (!entry.isIntersecting) {
           setRow1Anim("idle");
           setRow2Anim("idle");
+          setCards45Anim("idle");
         }
       },
       { threshold: 0 },
@@ -355,16 +358,22 @@ export function ProjectsSection() {
       ([entry]) => { if (entry.isIntersecting) setRow2Anim("entering"); },
       { threshold: 0.1, rootMargin: "0px 0px -5% 0px" },
     );
+    // Cards 4+5 get their own observer so they animate when THEY enter view
+    const cards45Obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setCards45Anim("entering"); },
+      { threshold: 0.15, rootMargin: "0px 0px -5% 0px" },
+    );
 
-    if (sectionRef.current) sectionObs.observe(sectionRef.current);
-    if (row1Ref.current)    row1Obs.observe(row1Ref.current);
-    if (row2Ref.current)    row2Obs.observe(row2Ref.current);
+    if (sectionRef.current)  sectionObs.observe(sectionRef.current);
+    if (row1Ref.current)     row1Obs.observe(row1Ref.current);
+    if (row2Ref.current)     row2Obs.observe(row2Ref.current);
+    if (cards45Ref.current)  cards45Obs.observe(cards45Ref.current);
 
-    return () => { sectionObs.disconnect(); row1Obs.disconnect(); row2Obs.disconnect(); };
+    return () => { sectionObs.disconnect(); row1Obs.disconnect(); row2Obs.disconnect(); cards45Obs.disconnect(); };
   }, []);
 
   return (
-    <section ref={sectionRef} id="proyectos" className="relative w-full overflow-hidden scroll-mt-16 lg:scroll-mt-[110px]">
+    <section ref={sectionRef} id="proyectos" className="relative w-full overflow-hidden scroll-mt-[90px] lg:scroll-mt-[50px]">
 
       <Image
         src="/assets/projects/projects-section-bg.png"
@@ -426,12 +435,12 @@ export function ProjectsSection() {
             <ProjectCard p={PROJECTS[5]} rowIndex={0} anim={row2Anim} />
           </div>
 
-          <div className="w-full lg:w-[42%] lg:shrink-0 flex flex-row lg:flex-col gap-5 lg:gap-8 order-2 lg:order-1">
+          <div ref={cards45Ref} className="w-full lg:w-[42%] lg:shrink-0 flex flex-row lg:flex-col gap-5 lg:gap-8 order-2 lg:order-1">
             <div className="w-1/2 lg:w-full">
-              <ProjectCard p={PROJECTS[3]} rowIndex={1} anim={row2Anim} />
+              <ProjectCard p={PROJECTS[3]} rowIndex={0} anim={cards45Anim} />
             </div>
             <div className="w-1/2 lg:w-full">
-              <ProjectCard p={PROJECTS[4]} rowIndex={2} anim={row2Anim} />
+              <ProjectCard p={PROJECTS[4]} rowIndex={1} anim={cards45Anim} />
             </div>
           </div>
 

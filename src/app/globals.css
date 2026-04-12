@@ -123,6 +123,17 @@ body {
   animation: fadeIn 0.6s ease both;
 }
 
+/* ─── Bubble animation (navbar items pop in like bubbles) ── */
+@keyframes bubbleIn {
+  0%   { opacity: 0; transform: scale(0.3) translateY(-12px); }
+  60%  { opacity: 1; transform: scale(1.06) translateY(1px); }
+  80%  { transform: scale(0.98) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-bubble-in {
+  animation: bubbleIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
 /* ── Exit animations (mirror of entry, slightly faster) ── */
 @keyframes fadeOutLeft {
   from { opacity: 1; transform: translateX(0); }

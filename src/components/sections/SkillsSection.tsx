@@ -52,7 +52,7 @@ export function SkillsSection() {
     <section
       ref={sectionRef}
       id="habilidades"
-      className="dot-pattern-green relative flex items-center justify-center w-full overflow-hidden scroll-mt-16 lg:scroll-mt-[110px]"
+      className="dot-pattern-green relative flex items-center justify-center w-full overflow-hidden scroll-mt-[50%] lg:scroll-mt-[-50px]"
       style={{ minHeight: "max(920px, 110svh)" }}
     >
       {/* Background image — 75% opacity per design */}
