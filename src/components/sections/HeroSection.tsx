@@ -91,7 +91,7 @@ export function HeroSection() {
               {/* CV */}
               <BrushBorder
                 fill="#c8ff00"
-                className="hover:brightness-110 active:scale-95 transition-all cursor-pointer"
+                className="hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200 cursor-pointer"
               >
                 <a
                   href="/assets/cv.pdf"
@@ -106,7 +106,7 @@ export function HeroSection() {
               {/* GitHub */}
               <BrushBorder
                 fill="rgba(0,0,0,0.06)"
-                className="active:scale-95 transition-all cursor-pointer"
+                className="hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200 cursor-pointer"
               >
                 <a
                   href="https://github.com/juangallardo19"

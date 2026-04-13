@@ -42,6 +42,13 @@ export default function Home() {
           </section>
           <TestimonialsSection />
           <ExperienceSection />
+          {/* Separator — dot-pattern keeps the background continuous between the two sections */}
+          <div className="dot-pattern relative py-[40px] lg:py-[60px]">
+            <div
+              className="relative z-10 mx-auto h-[1px] bg-[#4d4c4c]"
+              style={{ width: "min(640px, calc(100% - 48px))" }}
+            />
+          </div>
           <ContactSection />
         </div>
       </main>

@@ -43,7 +43,7 @@ const TESTIMONIALS = [
     card: "/assets/testimonials/card-2.svg",
   },
   {
-    name:   "Juan Mora",
+    name:   "James Mora",
     avatar: "/assets/testimonials/avatar-3.svg",
     text: {
       es: "Resuelve problemas complejos con calma. Su actitud positiva contagia a todo el equipo.",

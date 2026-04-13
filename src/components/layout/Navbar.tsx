@@ -51,7 +51,7 @@ export function Navbar() {
                 <Link
                   key={NAV_HREFS[i]}
                   href={NAV_HREFS[i]}
-                  className="font-bold text-black whitespace-nowrap px-[6px] py-[4px] rounded-[6px] hover:bg-black/10 transition-all leading-none animate-bubble-in"
+                  className="font-bold text-black whitespace-nowrap px-[6px] py-[4px] hover:-translate-y-[3px] transition-transform duration-200 leading-none animate-bubble-in"
                   style={{ fontFamily: "var(--font-big-shoulders)", fontSize: "clamp(11px, 1.05vw, 16px)", animationDelay: `${180 + i * 55}ms` }}
                 >
                   {label}
@@ -72,9 +72,10 @@ export function Navbar() {
                 className="absolute inset-y-[6px] rounded-[18px] bg-black pointer-events-none transition-all duration-300 ease-in-out"
                 style={{ left: lang === "es" ? "8px" : "50%", right: lang === "en" ? "8px" : "50%" }}
               />
+              {/* ES button — lifts only when EN is active */}
               <button
                 onClick={() => setLang("es")}
-                className="relative z-10 flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
+                className={`relative z-10 flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] transition-transform duration-200 ${lang !== "es" ? "hover:-translate-y-[3px]" : ""}`}
               >
                 <span className="overflow-hidden rounded-full w-[22px] h-[22px] flex flex-col shrink-0">
                   <span className="bg-[#fdcf16] w-full" style={{ height: "50%" }} />
@@ -88,9 +89,10 @@ export function Navbar() {
                   ES
                 </span>
               </button>
+              {/* EN button — lifts only when ES is active */}
               <button
                 onClick={() => setLang("en")}
-                className="relative z-10 flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
+                className={`relative z-10 flex gap-[7px] items-center justify-center px-[10px] py-[6px] rounded-[18px] transition-transform duration-200 ${lang !== "en" ? "hover:-translate-y-[3px]" : ""}`}
               >
                 <span className="relative overflow-hidden rounded-full w-[22px] h-[22px] bg-[#012169] shrink-0">
                   <span className="absolute inset-0 flex items-center justify-center">
@@ -113,7 +115,7 @@ export function Navbar() {
             <a
               href="/assets/cv.pdf"
               download
-              className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:brightness-110 active:scale-95 transition-all animate-bubble-in"
+              className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200 animate-bubble-in"
               style={{
                 backgroundImage: "url('/assets/hero/download-cv.svg')",
                 backgroundSize: "100% 100%",
@@ -189,7 +191,7 @@ export function Navbar() {
                 key={NAV_HREFS[i]}
                 href={NAV_HREFS[i]}
                 onClick={() => setOpen(false)}
-                className="font-bold text-[22px] text-black py-3 px-2 rounded-[6px] border-b border-black/10 last:border-0 hover:bg-black/10 transition-all leading-none"
+                className="font-bold text-[22px] text-black py-3 px-2 border-b border-black/10 last:border-0 hover:-translate-y-[2px] transition-transform duration-200 leading-none"
                 style={{ fontFamily: "var(--font-big-shoulders)" }}
               >
                 {labels[i]}
@@ -211,7 +213,7 @@ export function Navbar() {
               />
               <button
                 onClick={() => setLang("es")}
-                className="relative z-10 flex gap-[6px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
+                className={`relative z-10 flex gap-[6px] items-center justify-center px-[10px] py-[6px] rounded-[18px] transition-transform duration-200 ${lang !== "es" ? "hover:-translate-y-[3px]" : ""}`}
               >
                 <span className="overflow-hidden rounded-full w-[20px] h-[20px] flex flex-col shrink-0">
                   <span className="bg-[#fdcf16] w-full" style={{ height: "50%" }} />
@@ -228,7 +230,7 @@ export function Navbar() {
 
               <button
                 onClick={() => setLang("en")}
-                className="relative z-10 flex gap-[6px] items-center justify-center px-[10px] py-[6px] rounded-[18px] hover:bg-black/10 transition-colors"
+                className={`relative z-10 flex gap-[6px] items-center justify-center px-[10px] py-[6px] rounded-[18px] transition-transform duration-200 ${lang !== "en" ? "hover:-translate-y-[3px]" : ""}`}
               >
                 <span className="relative overflow-hidden rounded-full w-[20px] h-[20px] bg-[#012169] shrink-0">
                   <span className="absolute inset-0 flex items-center justify-center">
@@ -251,7 +253,7 @@ export function Navbar() {
             <a
               href="/assets/cv.pdf"
               download
-              className="flex items-center gap-[8px] px-[20px] py-[10px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none active:scale-95 transition-all"
+              className="flex items-center gap-[8px] px-[20px] py-[10px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200"
               style={{
                 backgroundImage: "url('/assets/hero/download-cv.svg')",
                 backgroundSize: "100% 100%",
