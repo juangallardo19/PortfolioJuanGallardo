@@ -179,23 +179,32 @@ function TestimonialCard({
 export function TestimonialsSection() {
   const { lang } = useLang();
 
-  // Scroll-triggered animation
+  // Scroll-triggered animation — header and carousel observed independently
   type AnimState = "idle" | "entering" | "exiting";
-  const sectionRef = useRef<HTMLElement>(null);
-  const [anim, setAnim] = useState<AnimState>("idle");
+  const headerRef   = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [headerAnim,   setHeaderAnim]   = useState<AnimState>("idle");
+  const [carouselAnim, setCarouselAnim] = useState<AnimState>("idle");
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setAnim("entering");
-        else setAnim(prev => (prev === "idle" ? "idle" : "exiting"));
-      },
-      { threshold: 0.1 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    const makeObs = (setter: React.Dispatch<React.SetStateAction<AnimState>>) =>
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setter("entering");
+          else setter(prev => (prev === "idle" ? "idle" : "exiting"));
+        },
+        { threshold: 0.2 }
+      );
+    const pairs: [React.RefObject<HTMLDivElement | null>, React.Dispatch<React.SetStateAction<AnimState>>][] = [
+      [headerRef, setHeaderAnim],
+      [carouselRef, setCarouselAnim],
+    ];
+    const observers = pairs.map(([ref, setter]) => {
+      const obs = makeObs(setter);
+      if (ref.current) obs.observe(ref.current);
+      return obs;
+    });
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
   // Responsive: 1 card on mobile (<768px), 3 on desktop
@@ -241,7 +250,6 @@ export function TestimonialsSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="testimonios"
       className="dot-pattern-lime relative flex items-center justify-center w-full overflow-hidden
                  scroll-mt-[90px] lg:scroll-mt-[-60px] min-h-[480px] lg:min-h-[920px]"
@@ -268,9 +276,10 @@ export function TestimonialsSection() {
 
         {/* ── Title + subtitle — right-aligned ── */}
         <div
+          ref={headerRef}
           className={`flex flex-col gap-[16px] lg:gap-[20px] items-end text-right ${
-            anim === "entering" ? "animate-fade-in-up" :
-            anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
+            headerAnim === "entering" ? "animate-fade-in-up" :
+            headerAnim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
           }`}
         >
           <h2 className="m-0 leading-[1.0] font-normal" style={{ fontFamily: "var(--font-big-shoulders)" }}>
@@ -291,11 +300,12 @@ export function TestimonialsSection() {
 
         {/* ── Carousel — arrows protrude beyond container padding ── */}
         <div
+          ref={carouselRef}
           className={`relative mx-10 md:mx-0 ${
-            anim === "entering" ? "animate-fade-in" :
-            anim === "exiting"  ? "animate-fade-out" : "opacity-0"
+            carouselAnim === "entering" ? "animate-fade-in" :
+            carouselAnim === "exiting"  ? "animate-fade-out" : "opacity-0"
           }`}
-          style={anim !== "idle" ? { animationDelay: "150ms" } : undefined}
+          style={carouselAnim !== "idle" ? { animationDelay: "150ms" } : undefined}
         >
           {/* Left arrow — pushed to section edge */}
           <button
@@ -349,8 +359,8 @@ export function TestimonialsSection() {
                   const visibleOffset = i - PRE;
                   const isInitial = visibleOffset >= 0 && visibleOffset < visibleCards;
                   const cardAnimClass =
-                    anim === "entering" && isInitial ? "animate-fade-in-up" :
-                    anim === "exiting"  && isInitial ? "animate-fade-out-down" : undefined;
+                    carouselAnim === "entering" && isInitial ? "animate-fade-in-up" :
+                    carouselAnim === "exiting"  && isInitial ? "animate-fade-out-down" : undefined;
                   const cardDelay = isInitial ? CARD_ENTRY_DELAYS[Math.min(visibleOffset, 2)] : undefined;
 
                   return (

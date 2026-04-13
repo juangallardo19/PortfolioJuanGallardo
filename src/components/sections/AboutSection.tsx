@@ -25,35 +25,43 @@ const CARD = {
   footer:    { size: 14              },    // "Algo más que developer"
 } as const;
 
+type AnimState = "idle" | "entering" | "exiting";
+
 export function AboutSection() {
   const { lang } = useLang();
   const about = t.about;
 
-  // "idle" = never seen | "entering" = visible | "exiting" = scrolled away
-  type AnimState = "idle" | "entering" | "exiting";
-  const sectionRef = useRef<HTMLElement>(null);
-  const [anim, setAnim] = useState<AnimState>("idle");
+  const leftRef   = useRef<HTMLDivElement>(null);
+  const socialRef = useRef<HTMLDivElement>(null);
+  const rightRef  = useRef<HTMLDivElement>(null);
+  const [leftAnim,   setLeftAnim]   = useState<AnimState>("idle");
+  const [socialAnim, setSocialAnim] = useState<AnimState>("idle");
+  const [rightAnim,  setRightAnim]  = useState<AnimState>("idle");
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setAnim("entering");
-        } else {
-          setAnim(prev => prev === "idle" ? "idle" : "exiting");
-        }
-      },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const makeObs = (setter: React.Dispatch<React.SetStateAction<AnimState>>) =>
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setter("entering");
+          else setter(prev => (prev === "idle" ? "idle" : "exiting"));
+        },
+        { threshold: 0.2 }
+      );
+    const pairs: [React.RefObject<HTMLDivElement | null>, React.Dispatch<React.SetStateAction<AnimState>>][] = [
+      [leftRef,   setLeftAnim],
+      [socialRef, setSocialAnim],
+      [rightRef,  setRightAnim],
+    ];
+    const observers = pairs.map(([ref, setter]) => {
+      const obs = makeObs(setter);
+      if (ref.current) obs.observe(ref.current);
+      return obs;
+    });
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
   return (
     <section
-      ref={sectionRef}
       id="acerca"
       className="relative flex items-center justify-center w-full overflow-hidden scroll-mt-[90px] lg:scroll-mt-[-45px]"
       style={{ minHeight: "max(920px, 110svh)" }}
@@ -64,9 +72,10 @@ export function AboutSection() {
 
         {/* ── LEFT: Title + Description + Social ─────────────────── */}
         <div
+          ref={leftRef}
           className={`flex flex-col w-full lg:w-auto lg:max-w-[480px] shrink-0 ${
-            anim === "entering" ? "animate-fade-in-left" :
-            anim === "exiting"  ? "animate-fade-out-left" : "opacity-0"
+            leftAnim === "entering" ? "animate-fade-in-left" :
+            leftAnim === "exiting"  ? "animate-fade-out-left" : "opacity-0"
           }`}
         >
           <div className="flex flex-col gap-4">
@@ -88,11 +97,11 @@ export function AboutSection() {
 
           {/* Social media card — mt-[30px] gap from description, w-fit fixes SVG alignment */}
           <div
+            ref={socialRef}
             className={`relative mt-[30px] w-fit ${
-              anim === "entering" ? "animate-fade-in-up" :
-              anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
+              socialAnim === "entering" ? "animate-fade-in-up" :
+              socialAnim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
             }`}
-            style={anim !== "idle" ? { animationDelay: "250ms" } : undefined}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -110,10 +119,10 @@ export function AboutSection() {
                   rel="noopener noreferrer"
                   aria-label={s.name}
                   className={`relative shrink-0 w-[76px] h-[76px] hover:brightness-75 active:scale-95 transition-all ${
-                    anim === "entering" ? "animate-fade-in-up" :
-                    anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
+                    socialAnim === "entering" ? "animate-fade-in-up" :
+                    socialAnim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
                   }`}
-                  style={anim !== "idle" ? { animationDelay: `${350 + i * 100}ms` } : undefined}
+                  style={socialAnim !== "idle" ? { animationDelay: `${i * 100}ms` } : undefined}
                 >
                   <div className="relative w-full h-full">
                     <Image src={s.icon} alt={s.name} fill className="object-contain" />
@@ -126,11 +135,12 @@ export function AboutSection() {
 
         {/* ── RIGHT: About card ────────────────────────────────────── */}
         <div
+          ref={rightRef}
           className={`relative shrink-0 w-[min(420px,calc(100vw-48px))] ${
-            anim === "entering" ? "animate-fade-in-right" :
-            anim === "exiting"  ? "animate-fade-out-right" : "opacity-0"
+            rightAnim === "entering" ? "animate-fade-in-right" :
+            rightAnim === "exiting"  ? "animate-fade-out-right" : "opacity-0"
           }`}
-          style={anim !== "idle" ? { animationDelay: "150ms" } : undefined}
+          style={rightAnim !== "idle" ? { animationDelay: "150ms" } : undefined}
         >
           {/* CardAboutMe.svg — visual only */}
           {/* eslint-disable-next-line @next/next/no-img-element */}

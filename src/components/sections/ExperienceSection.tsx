@@ -135,13 +135,17 @@ export function ExperienceSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const outerRef   = useRef<HTMLDivElement>(null);
   const titleRef   = useRef<HTMLDivElement>(null);
-  const [anim, setAnim] = useState<AnimState>("idle");
-  const [zoom, setZoom] = useState(MAX_ZOOM);
+  const card1Ref   = useRef<HTMLDivElement>(null);
+  const card2Ref   = useRef<HTMLDivElement>(null);
+  const card3Ref   = useRef<HTMLDivElement>(null);
 
-  // IntersectionObserver on the <section> element — reliable (observing the
-  // overflow:hidden container itself, not something inside it).
-  // Title gets a 200ms animationDelay so the user has scrolled enough to see it
-  // before the fade-in starts. Exit resets to idle for clean re-entry.
+  const [anim,  setAnim]  = useState<AnimState>("idle");
+  const [anim1, setAnim1] = useState<AnimState>("idle");
+  const [anim2, setAnim2] = useState<AnimState>("idle");
+  const [anim3, setAnim3] = useState<AnimState>("idle");
+  const [zoom,  setZoom]  = useState(MAX_ZOOM);
+
+  // Section-level observer — drives title + center SVG
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -156,6 +160,30 @@ export function ExperienceSection() {
     return () => obs.disconnect();
   }, []);
 
+  // Per-card observers — each card animates when it enters the viewport
+  useEffect(() => {
+    const makeObs = (setter: React.Dispatch<React.SetStateAction<AnimState>>) =>
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setter("entering");
+          else setter(prev => (prev === "idle" ? "idle" : "exiting"));
+        },
+        { threshold: 0.15 }
+      );
+
+    const pairs: [React.RefObject<HTMLDivElement | null>, React.Dispatch<React.SetStateAction<AnimState>>][] = [
+      [card1Ref, setAnim1],
+      [card2Ref, setAnim2],
+      [card3Ref, setAnim3],
+    ];
+    const observers = pairs.map(([ref, setter]) => {
+      const obs = makeObs(setter);
+      if (ref.current) obs.observe(ref.current);
+      return obs;
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, []);
+
   // ResizeObserver: zoom to fill container on all screen sizes
   useEffect(() => {
     const el = outerRef.current;
@@ -167,11 +195,11 @@ export function ExperienceSection() {
     return () => ro.disconnect();
   }, []);
 
-  const titleA = ea(anim, "animate-fade-in-up", "animate-fade-out-down", DELAY.title);
-  const cA     = ea(anim, "animate-fade-in-up", "animate-fade-out-down", DELAY.center);
-  const a1     = ea(anim, "animate-fade-in-up", "animate-fade-out-down", DELAY.card1);
-  const a2     = ea(anim, "animate-fade-in-up", "animate-fade-out-down", DELAY.card2);
-  const a3     = ea(anim, "animate-fade-in-up", "animate-fade-out-down", DELAY.card3);
+  const titleA = ea(anim,  "animate-fade-in-up", "animate-fade-out-down", DELAY.title);
+  const cA     = ea(anim,  "animate-fade-in-up", "animate-fade-out-down", DELAY.center);
+  const a1     = ea(anim1, "animate-fade-in-up", "animate-fade-out-down", 0);
+  const a2     = ea(anim2, "animate-fade-in-up", "animate-fade-out-down", 0);
+  const a3     = ea(anim3, "animate-fade-in-up", "animate-fade-out-down", 0);
 
   const c1 = CARDS.card1;
   const c2 = CARDS.card2;
@@ -232,20 +260,24 @@ export function ExperienceSection() {
                   justifyContent: "space-between", flexShrink: 0,
                 }}
               >
-                <CardLink
-                  href={c1.href} w={CARD1.w} h={CARD1.h}
-                  animCls={a1.cls} animStyle={a1.style}
-                  svgSrc="/assets/experience/Card-1.svg"
-                  title={c1.title[lang]} line1={c1.line1[lang]} line2={c1.line2[lang]}
-                  institution={c1.institution}
-                />
-                <CardLink
-                  href={c3.href} w={CARD3.w} h={CARD3.h}
-                  animCls={a3.cls} animStyle={a3.style}
-                  svgSrc="/assets/experience/Card-3.svg"
-                  title={c3.title[lang]} line1={c3.line1[lang]} line2={c3.line2[lang]}
-                  institution={c3.institution}
-                />
+                <div ref={card1Ref}>
+                  <CardLink
+                    href={c1.href} w={CARD1.w} h={CARD1.h}
+                    animCls={a1.cls} animStyle={a1.style}
+                    svgSrc="/assets/experience/Card-1.svg"
+                    title={c1.title[lang]} line1={c1.line1[lang]} line2={c1.line2[lang]}
+                    institution={c1.institution}
+                  />
+                </div>
+                <div ref={card3Ref}>
+                  <CardLink
+                    href={c3.href} w={CARD3.w} h={CARD3.h}
+                    animCls={a3.cls} animStyle={a3.style}
+                    svgSrc="/assets/experience/Card-3.svg"
+                    title={c3.title[lang]} line1={c3.line1[lang]} line2={c3.line2[lang]}
+                    institution={c3.institution}
+                  />
+                </div>
               </div>
 
               {/* Gap */}
@@ -281,13 +313,15 @@ export function ExperienceSection() {
                   display: "flex", alignItems: "center", flexShrink: 0,
                 }}
               >
-                <CardLink
-                  href={c2.href} w={CARD2.w} h={CARD2.h}
-                  animCls={a2.cls} animStyle={a2.style}
-                  svgSrc="/assets/experience/Card-2.svg"
-                  title={c2.title[lang]} line1={c2.line1[lang]} line2={c2.line2[lang]}
-                  institution={c2.institution}
-                />
+                <div ref={card2Ref}>
+                  <CardLink
+                    href={c2.href} w={CARD2.w} h={CARD2.h}
+                    animCls={a2.cls} animStyle={a2.style}
+                    svgSrc="/assets/experience/Card-2.svg"
+                    title={c2.title[lang]} line1={c2.line1[lang]} line2={c2.line2[lang]}
+                    institution={c2.institution}
+                  />
+                </div>
               </div>
 
             </div>

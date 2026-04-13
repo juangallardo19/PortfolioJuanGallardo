@@ -66,25 +66,40 @@ export function ContactSection() {
   const { lang } = useLang();
   const ct = t.contact;
 
-  const sectionRef = useRef<HTMLElement>(null);
-  const [anim, setAnim] = useState<AnimState>("idle");
+  const photoRef     = useRef<HTMLDivElement>(null);
+  const githubRef    = useRef<HTMLDivElement>(null);
+  const socialRowRef = useRef<HTMLDivElement>(null);
+  const formRef      = useRef<HTMLDivElement>(null);
+  const [photoAnim,     setPhotoAnim]     = useState<AnimState>("idle");
+  const [githubAnim,    setGithubAnim]    = useState<AnimState>("idle");
+  const [socialRowAnim, setSocialRowAnim] = useState<AnimState>("idle");
+  const [formAnim,      setFormAnim]      = useState<AnimState>("idle");
 
   // Form state
   const [formData, setFormData] = useState({ email: "", name: "", message: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setAnim("entering");
-        else setAnim(prev => (prev === "idle" ? "idle" : "exiting"));
-      },
-      { threshold: 0.08 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    const makeObs = (setter: React.Dispatch<React.SetStateAction<AnimState>>) =>
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setter("entering");
+          else setter(prev => (prev === "idle" ? "idle" : "exiting"));
+        },
+        { threshold: 0.2 }
+      );
+    const pairs: [React.RefObject<HTMLDivElement | null>, React.Dispatch<React.SetStateAction<AnimState>>][] = [
+      [photoRef,     setPhotoAnim],
+      [githubRef,    setGithubAnim],
+      [socialRowRef, setSocialRowAnim],
+      [formRef,      setFormAnim],
+    ];
+    const observers = pairs.map(([ref, setter]) => {
+      const obs = makeObs(setter);
+      if (ref.current) obs.observe(ref.current);
+      return obs;
+    });
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -109,12 +124,12 @@ export function ContactSection() {
     }
   };
 
-  // ── Individual animations — adjust delays (last argument, in ms) as needed ──
-  const photoA    = ea(anim, "animate-fade-in-left",  "animate-fade-out-left",    0);
-  const githubA   = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",  200);
-  const linkedinA = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",  350);
-  const gmailA    = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",  500);
-  const rightA    = ea(anim, "animate-fade-in-right", "animate-fade-out-right", 150);
+  // ── Individual animations — each driven by its own observer ──
+  const photoA    = ea(photoAnim,     "animate-fade-in-left",  "animate-fade-out-left",   0);
+  const githubA   = ea(githubAnim,    "animate-fade-in-up",    "animate-fade-out-down",   0);
+  const linkedinA = ea(socialRowAnim, "animate-fade-in-up",    "animate-fade-out-down",   0);
+  const gmailA    = ea(socialRowAnim, "animate-fade-in-up",    "animate-fade-out-down", 100);
+  const rightA    = ea(formAnim,      "animate-fade-in-right", "animate-fade-out-right",  0);
 
   const inputStyle: React.CSSProperties = {
     fontFamily: "var(--font-big-shoulders)",
@@ -126,7 +141,6 @@ export function ContactSection() {
 
   return (
     <section
-      ref={sectionRef}
       id="contacto"
       className="dot-pattern relative w-full overflow-hidden scroll-mt-[90px] lg:scroll-mt-[-35px]"
     >
@@ -153,7 +167,7 @@ export function ContactSection() {
             {/* ── Photo ──
                 To move up/down relative to the cards below: adjust marginBottom here.
             */}
-            <div className={photoA.cls} style={photoA.style}>
+            <div ref={photoRef} className={photoA.cls} style={photoA.style}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/assets/contact/photoContact.svg"
@@ -174,7 +188,7 @@ export function ContactSection() {
                             scale-[0.80] origin-top -mb-[40px]
                             lg:scale-100 lg:mb-0">
 
-              <div className={`w-fit ${githubA.cls}`} style={githubA.style}>
+              <div ref={githubRef} className={`w-fit ${githubA.cls}`} style={githubA.style}>
                 <SocialCard
                   href="https://github.com/juangallardo19"
                   svgSrc="/assets/contact/card-github.svg"
@@ -186,7 +200,7 @@ export function ContactSection() {
               </div>
 
               {/* LinkedIn + Gmail — always side by side */}
-              <div className="flex gap-[10px] w-full justify-center">
+              <div ref={socialRowRef} className="flex gap-[10px] w-full justify-center">
 
                 <div
                   className={linkedinA.cls}
@@ -223,6 +237,7 @@ export function ContactSection() {
           {/* ── Right column: contact form ──────────────────────────────── */}
           {/* order-1: on mobile the form appears FIRST (above the photo column) */}
           <div
+            ref={formRef}
             className={`order-1 lg:order-2 relative w-full lg:max-w-[558px] ${rightA.cls}`}
             style={rightA.style}
           >

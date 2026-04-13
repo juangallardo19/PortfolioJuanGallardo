@@ -1,8 +1,18 @@
 "use client";
 
 import Image from "next/image";
+import { useRef, useState, useEffect } from "react";
 import { BrushBorder } from "@/components/ui/BrushBorder";
 import { useLang, t } from "@/context/LanguageContext";
+
+type AnimState = "idle" | "entering" | "exiting";
+
+function ea(anim: AnimState, enter: string, exit: string, delayMs = 0) {
+  const style: React.CSSProperties = delayMs ? { animationDelay: `${delayMs}ms` } : {};
+  if (anim === "entering") return { cls: enter, style };
+  if (anim === "exiting")  return { cls: exit,  style };
+  return { cls: "opacity-0", style: {} as React.CSSProperties };
+}
 
 export function HeroSection() {
   const { lang } = useLang();
@@ -10,8 +20,31 @@ export function HeroSection() {
   const [pre, mid1, mid2, end] = hero.description[lang];
   const [w1, w2, w3] = hero.highlightWords[lang];
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const [anim, setAnim] = useState<AnimState>("idle");
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setAnim("entering");
+        else setAnim(prev => (prev === "idle" ? "idle" : "exiting"));
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const titleA   = ea(anim, "animate-fade-in-left",  "animate-fade-out-left",   100);
+  const descA    = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   200);
+  const btnsA    = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   400);
+  const photoA   = ea(anim, "animate-fade-in-right", "animate-fade-out-right",  300);
+
   return (
     <section
+      ref={sectionRef}
       id="inicio"
       className="dot-pattern relative flex items-center justify-center w-full overflow-hidden"
       style={{ minHeight: "min(860px, 100svh)" }}
@@ -32,8 +65,8 @@ export function HeroSection() {
 
           {/* Title */}
           <h1
-            className="leading-[1.0] m-0 font-normal animate-fade-in-left delay-100 w-full"
-            style={{ fontFamily: "var(--font-big-shoulders)" }}
+            className={`leading-[1.0] m-0 font-normal w-full ${titleA.cls}`}
+            style={{ fontFamily: "var(--font-big-shoulders)", ...titleA.style }}
           >
             <span
               className="block text-[44px] sm:text-[56px] lg:text-[64px] text-[#4d4c4c]"
@@ -57,8 +90,8 @@ export function HeroSection() {
 
           {/* Description */}
           <p
-            className="text-[18px] sm:text-[22px] lg:text-[26px] text-[#717171] text-justify leading-[36px] lg:leading-[44px] tracking-[2px] m-0 font-normal animate-fade-in-up delay-200"
-            style={{ fontFamily: "var(--font-big-shoulders)" }}
+            className={`text-[18px] sm:text-[22px] lg:text-[26px] text-[#717171] text-justify leading-[36px] lg:leading-[44px] tracking-[2px] m-0 font-normal ${descA.cls}`}
+            style={{ fontFamily: "var(--font-big-shoulders)", ...descA.style }}
           >
             {pre}
             <strong
@@ -85,7 +118,7 @@ export function HeroSection() {
           </p>
 
           {/* Buttons row */}
-          <div className="flex flex-col gap-[16px] sm:gap-[20px] animate-fade-in-up delay-400">
+          <div className={`flex flex-col gap-[16px] sm:gap-[20px] ${btnsA.cls}`} style={btnsA.style}>
 
             <div className="flex items-center gap-[16px] sm:gap-[24px]">
               {/* CV */}
@@ -127,7 +160,7 @@ export function HeroSection() {
         </div>
 
         {/* ── Right: Photo ──────────────────────────── */}
-        <div className="relative shrink-0 animate-fade-in-right delay-300">
+        <div className={`relative shrink-0 ${photoA.cls}`} style={photoA.style}>
           <Image
             src="/assets/hero/hero-photo.png"
             alt="Juan Pablo Gallardo — Full Stack Developer"

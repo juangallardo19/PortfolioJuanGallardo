@@ -21,36 +21,44 @@ const SKILLS = [
 // Grid positions: [0,0]=0 [0,1]=1 [0,2]=2 [1,0]=1 [1,1]=2 [1,2]=3 [2,0]=2 [2,1]=3 [2,2]=4
 const CARD_DELAYS = [0, 100, 200, 100, 200, 300, 200, 300, 400];
 
+type AnimState = "idle" | "entering" | "exiting";
+
 export function SkillsSection() {
   const { lang } = useLang();
   const skills = t.skills;
   const [descPre, descHighlight, descPost] = skills.description[lang];
 
-  // "idle" = never seen | "entering" = visible | "exiting" = scrolled away
-  type AnimState = "idle" | "entering" | "exiting";
-  const sectionRef = useRef<HTMLElement>(null);
-  const [anim, setAnim] = useState<AnimState>("idle");
+  const leftRef       = useRef<HTMLDivElement>(null);
+  const photoRef      = useRef<HTMLDivElement>(null);
+  const skillsCardRef = useRef<HTMLDivElement>(null);
+  const [leftAnim,       setLeftAnim]       = useState<AnimState>("idle");
+  const [photoAnim,      setPhotoAnim]      = useState<AnimState>("idle");
+  const [skillsCardAnim, setSkillsCardAnim] = useState<AnimState>("idle");
 
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setAnim("entering");
-        } else {
-          setAnim(prev => prev === "idle" ? "idle" : "exiting");
-        }
-      },
-      { threshold: 0.12 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const makeObs = (setter: React.Dispatch<React.SetStateAction<AnimState>>) =>
+      new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setter("entering");
+          else setter(prev => (prev === "idle" ? "idle" : "exiting"));
+        },
+        { threshold: 0.2 }
+      );
+    const pairs: [React.RefObject<HTMLDivElement | null>, React.Dispatch<React.SetStateAction<AnimState>>][] = [
+      [leftRef,       setLeftAnim],
+      [photoRef,      setPhotoAnim],
+      [skillsCardRef, setSkillsCardAnim],
+    ];
+    const observers = pairs.map(([ref, setter]) => {
+      const obs = makeObs(setter);
+      if (ref.current) obs.observe(ref.current);
+      return obs;
+    });
+    return () => observers.forEach(o => o.disconnect());
   }, []);
 
   return (
     <section
-      ref={sectionRef}
       id="habilidades"
       className="dot-pattern-green relative flex items-center justify-center w-full overflow-hidden scroll-mt-[50%] lg:scroll-mt-[-50px]"
       style={{ minHeight: "max(920px, 110svh)" }}
@@ -76,9 +84,10 @@ export function SkillsSection() {
 
         {/* ── LEFT: Skills grid — on mobile appears BELOW the right column ── */}
         <div
+          ref={leftRef}
           className={`relative shrink-0 overflow-visible w-[min(540px,calc(100vw-48px))] aspect-square order-2 lg:order-1 ${
-            anim === "entering" ? "animate-fade-in-left" :
-            anim === "exiting"  ? "animate-fade-out-left" : "opacity-0"
+            leftAnim === "entering" ? "animate-fade-in-left" :
+            leftAnim === "exiting"  ? "animate-fade-out-left" : "opacity-0"
           }`}
         >
           {/* Organic brush border + white fill baked into SVG */}
@@ -96,10 +105,10 @@ export function SkillsSection() {
               <div
                 key={skill.name}
                 className={`relative aspect-[148/127] ${
-                  anim === "entering" ? "animate-fade-in-up" :
-                  anim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
+                  leftAnim === "entering" ? "animate-fade-in-up" :
+                  leftAnim === "exiting"  ? "animate-fade-out-down" : "opacity-0"
                 }`}
-                style={anim !== "idle" ? { animationDelay: `${CARD_DELAYS[i]}ms` } : undefined}
+                style={leftAnim !== "idle" ? { animationDelay: `${CARD_DELAYS[i]}ms` } : undefined}
               >
                 {/* Card shape SVG */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -131,23 +140,29 @@ export function SkillsSection() {
         </div>
 
         {/* ── RIGHT: Photo + Habilidades card — on mobile appears FIRST ── */}
-        <div
-          className={`flex flex-col items-center lg:items-end gap-4 shrink-0 order-1 lg:order-2 ${
-            anim === "entering" ? "animate-fade-in-right" :
-            anim === "exiting"  ? "animate-fade-out-right" : "opacity-0"
-          }`}
-          style={anim !== "idle" ? { animationDelay: "300ms" } : undefined}
-        >
+        <div className="flex flex-col items-center lg:items-end gap-4 shrink-0 order-1 lg:order-2">
+
           {/* Photo blob */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/assets/skills/skillsPhoto.svg"
-            alt="Juan Pablo Gallardo"
-            className="w-[min(360px,calc(100vw-48px))] h-auto pb-[6px]"
-          />
+          <div
+            ref={photoRef}
+            className={`${photoAnim === "entering" ? "animate-fade-in-right" : photoAnim === "exiting" ? "animate-fade-out-right" : "opacity-0"}`}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/skills/skillsPhoto.svg"
+              alt="Juan Pablo Gallardo"
+              className="w-[min(360px,calc(100vw-48px))] h-auto pb-[6px]"
+            />
+          </div>
 
           {/* "Mis Habilidades" card — height adapts to content */}
-          <div className="relative w-[min(520px,calc(100vw-48px))]">
+          <div
+            ref={skillsCardRef}
+            className={`relative w-[min(520px,calc(100vw-48px))] ${
+              skillsCardAnim === "entering" ? "animate-fade-in-right" :
+              skillsCardAnim === "exiting"  ? "animate-fade-out-right" : "opacity-0"
+            }`}
+          >
             {/* SVG background stretches to match content height */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
