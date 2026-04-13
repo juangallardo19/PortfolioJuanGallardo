@@ -84,14 +84,20 @@ export function Footer() {
       // The Bg-Footer.svg provides the lime-green once rendered.
       className="dot-pattern relative w-full overflow-hidden"
     >
-      {/* object-cover scales the SVG to fill — vector so no quality loss.
-          object-top pins the arch decoration to the top edge.
-          overflow-hidden on the footer clips anything that extends past the sides. */}
+      {/* Desktop background */}
       <Image
         src="/assets/shared/Bg-Footer.svg"
         alt=""
         fill
-        className="pointer-events-none"
+        className="hidden lg:block pointer-events-none"
+        style={{ objectFit: "cover", objectPosition: "top center" }}
+      />
+      {/* Mobile background */}
+      <Image
+        src="/assets/shared/Bg-Footer-mobile.svg"
+        alt=""
+        fill
+        className="block lg:hidden pointer-events-none"
         style={{ objectFit: "cover", objectPosition: "top center" }}
       />
 
@@ -133,7 +139,7 @@ export function Footer() {
               giving the visual impression it's shifted left of centre.
               Cards sub-container stays items-center so Tailwind card is
               centred under the React+TS row.                                */}
-          <div className="flex flex-col items-center gap-[30px] lg:pt-[60px] lg:pl-[40px]">
+          <div className="flex flex-col items-center gap-[30px] lg:pt-[60px] lg:pl-[0px]">
             <h4
               className={`m-0 font-bold text-[#141414] leading-none text-center ${techTitleA.cls}`}
               style={{

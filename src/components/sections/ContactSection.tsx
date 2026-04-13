@@ -167,54 +167,56 @@ export function ContactSection() {
                 To move this card vertically: adjust style={{ marginTop: X }} on the wrapper.
                 To shift icon/text inside: edit contentStyle on SocialCard below.
             */}
-            <div className={`w-fit ${githubA.cls}`} style={githubA.style}>
-              <SocialCard
-                href="https://github.com/juangallardo19"
-                svgSrc="/assets/contact/card-github.svg"
-                iconSrc="/assets/contact/github.svg"
-                text="juangallardo19"
-                w={210} h={107}
-                contentStyle={{ paddingLeft: 0 }}
-              />
-            </div>
+            {/* ── Cards wrapper — scales down on mobile so icons/text stay in place ──
+                scale + origin-top shrinks visually; -mb compensates the dead space
+                transform leaves behind so the photo doesn't drift away.           */}
+            <div className="w-full flex flex-col items-center gap-[16px]
+                            scale-[0.80] origin-top -mb-[40px]
+                            lg:scale-100 lg:mb-0">
 
-            {/* ── LinkedIn + Gmail — always side by side ──
-                To move the whole row: add marginTop to the outer div.
-                To move each card individually: add marginTop/marginLeft to its wrapper.
-                To shift icon/text inside each card: edit contentStyle on SocialCard.
-            */}
-            <div className="flex gap-[10px] w-full justify-center">
-
-              {/* LinkedIn wrapper — adjust marginTop/marginLeft here to reposition */}
-              <div
-                className={linkedinA.cls}
-                style={{ flex: 213, minWidth: 0, ...linkedinA.style }}
-              >
+              <div className={`w-fit ${githubA.cls}`} style={githubA.style}>
                 <SocialCard
-                  href="https://linkedin.com/in/juanpablogallardo"
-                  svgSrc="/assets/contact/card-linkdn.svg"
-                  iconSrc="/assets/contact/linkdn.svg"
-                  text="Juan Gallardo"
-                  w={213} h={114}
-                  contentStyle={{ paddingBottom: 14, paddingLeft: 8 }}
+                  href="https://github.com/juangallardo19"
+                  svgSrc="/assets/contact/card-github.svg"
+                  iconSrc="/assets/contact/github.svg"
+                  text="juangallardo19"
+                  w={210} h={107}
+                  contentStyle={{ paddingLeft: 5, paddingBottom: 5 }}
                 />
               </div>
 
-              {/* Gmail wrapper — adjust marginTop/marginLeft here to reposition */}
-              <div
-                className={gmailA.cls}
-                style={{ flex: 275, minWidth: 0, ...gmailA.style }}
-              >
-                <SocialCard
-                  href="mailto:Juangallardocsfn@gmail.com"
-                  svgSrc="/assets/contact/card-gmail.svg"
-                  iconSrc="/assets/contact/gmail.svg"
-                  text="Juangallardocsfn@gmail.com"
-                  w={275} h={108}
-                  contentStyle={{ paddingBottom: 14, paddingLeft: 8 }}
-                />
-              </div>
+              {/* LinkedIn + Gmail — always side by side */}
+              <div className="flex gap-[10px] w-full justify-center">
 
+                <div
+                  className={linkedinA.cls}
+                  style={{ flex: 213, minWidth: 0, ...linkedinA.style }}
+                >
+                  <SocialCard
+                    href="https://linkedin.com/in/juanpablogallardo"
+                    svgSrc="/assets/contact/card-linkdn.svg"
+                    iconSrc="/assets/contact/linkdn.svg"
+                    text="Juan Gallardo"
+                    w={213} h={114}
+                    contentStyle={{ paddingBottom: 9, paddingLeft: 13 }}
+                  />
+                </div>
+
+                <div
+                  className={gmailA.cls}
+                  style={{ flex: 275, minWidth: 0, ...gmailA.style }}
+                >
+                  <SocialCard
+                    href="mailto:Juangallardocsfn@gmail.com"
+                    svgSrc="/assets/contact/card-gmail.svg"
+                    iconSrc="/assets/contact/gmail.svg"
+                    text="Juangallardocsfn@gmail.com"
+                    w={275} h={108}
+                    contentStyle={{ paddingBottom: 14, paddingLeft: 3 }}
+                  />
+                </div>
+
+              </div>
             </div>
           </div>
 
