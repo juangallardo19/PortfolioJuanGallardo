@@ -16,7 +16,7 @@ const TECH_CARDS = [
   { card: "/assets/shared/Tail-Card.svg",  icon: "/assets/shared/TailIcon.svg",  label: "TailWind CSS" },
 ];
 
-// ── Animation helpers (mirrors ContactSection pattern) ────────────────────────
+// ── Animation helpers ─────────────────────────────────────────────────────────
 type AnimState = "idle" | "entering" | "exiting";
 
 function ea(anim: AnimState, enter: string, exit: string, delayMs = 0) {
@@ -26,8 +26,7 @@ function ea(anim: AnimState, enter: string, exit: string, delayMs = 0) {
   return { cls: "opacity-0", style: {} as React.CSSProperties };
 }
 
-// ── Single tech card ──────────────────────────────────────────────────────────
-// Fixed height ensures uniform card height regardless of differing SVG widths.
+// ── Tech card — fixed height so all cards align regardless of SVG width ───────
 function TechCard({ card, icon, label }: { card: string; icon: string; label: string }) {
   return (
     <div className="relative" style={{ height: 90, display: "inline-flex" }}>
@@ -69,39 +68,43 @@ export function Footer() {
     return () => obs.disconnect();
   }, []);
 
-  // ── Individual animations ────────────────────────────────────────────────────
-  const logoA     = ea(anim, "animate-fade-in-left",  "animate-fade-out-left",     0);
-  const phraseA   = ea(anim, "animate-fade-in-left",  "animate-fade-out-left",   100);
-  const techTitleA= ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   150);
-  const card1A    = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   260);
-  const card2A    = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   360);
-  const card3A    = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   460);
-  const navTitleA = ea(anim, "animate-fade-in-right", "animate-fade-out-right",  150);
+  // ── Individual element animations ────────────────────────────────────────────
+  const logoA      = ea(anim, "animate-fade-in-left",  "animate-fade-out-left",     0);
+  const phraseA    = ea(anim, "animate-fade-in-left",  "animate-fade-out-left",   100);
+  const techTitleA = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   150);
+  const card1A     = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   260);
+  const card2A     = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   360);
+  const card3A     = ea(anim, "animate-fade-in-up",    "animate-fade-out-down",   460);
+  const navTitleA  = ea(anim, "animate-fade-in-right", "animate-fade-out-right",  150);
 
   return (
     <footer
       ref={footerRef}
-      // dot-pattern = neutral grey fallback; the Bg-Footer.svg SVG contains
-      // the full lime-green background so no colour clash on overflow.
+      // dot-pattern = grey fallback so the transition into the footer is smooth.
+      // The Bg-Footer.svg provides the lime-green once rendered.
       className="dot-pattern relative w-full overflow-hidden"
     >
-      {/* SVG is vector — objectFit:fill stretches without quality loss */}
+      {/* object-cover scales the SVG to fill — vector so no quality loss.
+          object-top pins the arch decoration to the top edge.
+          overflow-hidden on the footer clips anything that extends past the sides. */}
       <Image
         src="/assets/shared/Bg-Footer.svg"
         alt=""
         fill
         className="pointer-events-none"
-        style={{ objectFit: "fill" }}
+        style={{ objectFit: "cover", objectPosition: "top center" }}
       />
 
       <div className="relative z-10 w-full max-w-[1300px] mx-auto
                       px-6 sm:px-10 lg:px-[60px] pt-[60px] lg:pt-[80px] pb-[40px]">
 
-        {/* ── 3-column layout ─────────────────────────────────────────── */}
-        <div className="flex flex-col lg:flex-row gap-[48px] lg:gap-0 justify-between items-start">
+        {/* ── 3-column grid — equal thirds guarantee the centre column sits
+            at exactly 1/3 of the width.
+            On mobile the grid collapses to 1 column, centred.               */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-[48px] lg:gap-0 justify-items-center lg:justify-items-stretch">
 
           {/* ── Left: Logo + phrase ──────────────────────────────────── */}
-          <div className="flex flex-col gap-[20px] lg:max-w-[300px]">
+          <div className="flex flex-col items-center lg:items-start gap-[20px]">
             <div className={logoA.cls} style={logoA.style}>
               <Link href="#inicio">
                 <Image
@@ -114,7 +117,7 @@ export function Footer() {
               </Link>
             </div>
             <p
-              className={`m-0 font-bold text-[#141414] leading-snug ${phraseA.cls}`}
+              className={`m-0 font-bold text-[#141414] leading-snug text-center lg:text-left lg:max-w-[200px] ${phraseA.cls}`}
               style={{
                 fontFamily: "var(--font-big-shoulders)",
                 fontSize: "clamp(15px, 1.4vw, 20px)",
@@ -126,11 +129,13 @@ export function Footer() {
           </div>
 
           {/* ── Center: Tech cards ───────────────────────────────────── */}
-          {/*  - Title: left-aligned (items-start on column)              */}
-          {/*  - Cards: centered within their own sub-container           */}
-          <div className="flex flex-col items-start gap-[20px] lg:pt-[60px]">
+          {/* items-start on desktop: title left-aligns within the centre third,
+              giving the visual impression it's shifted left of centre.
+              Cards sub-container stays items-center so Tailwind card is
+              centred under the React+TS row.                                */}
+          <div className="flex flex-col items-center gap-[30px] lg:pt-[60px] lg:pl-[40px]">
             <h4
-              className={`m-0 font-bold text-[#141414] leading-none ${techTitleA.cls}`}
+              className={`m-0 font-bold text-[#141414] leading-none text-center ${techTitleA.cls}`}
               style={{
                 fontFamily: "var(--font-big-shoulders)",
                 fontSize: 24,
@@ -140,10 +145,7 @@ export function Footer() {
               {ft.techTitle[lang]}
             </h4>
 
-            {/* Cards sub-container: items-center so Tailwind card sits centred
-                under the React+TypeScript row, independent of title alignment */}
             <div className="flex flex-col items-center gap-[12px]">
-              {/* Row 1: React + TypeScript — each animates separately */}
               <div className="flex gap-[12px]">
                 <div className={card1A.cls} style={card1A.style}>
                   <TechCard {...TECH_CARDS[0]} />
@@ -152,15 +154,14 @@ export function Footer() {
                   <TechCard {...TECH_CARDS[1]} />
                 </div>
               </div>
-              {/* Row 2: Tailwind — centred under row 1 */}
               <div className={card3A.cls} style={card3A.style}>
                 <TechCard {...TECH_CARDS[2]} />
               </div>
             </div>
           </div>
 
-          {/* ── Right: Navigation — heading + links centered in column ── */}
-          <div className="flex flex-col items-center gap-[20px]">
+          {/* ── Right: Navigation — pushed to the right edge of its grid cell ── */}
+          <div className="flex flex-col items-center gap-[20px] lg:justify-self-end">
             <h3
               className={`m-0 font-bold text-[#141414] leading-none text-center ${navTitleA.cls}`}
               style={{
