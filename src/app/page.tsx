@@ -6,6 +6,7 @@ import { ProjectsSection } from "@/components/sections/ProjectsSection";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ExperienceSection } from "@/components/sections/ExperienceSection";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { Footer } from "@/components/layout/Footer";
 import { ParallaxProvider } from "@/components/ui/ParallaxProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 
@@ -51,6 +52,7 @@ export default function Home() {
           </div>
           <ContactSection />
         </div>
+        <Footer />
       </main>
     </LanguageProvider>
   );

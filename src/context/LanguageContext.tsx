@@ -141,4 +141,14 @@ export const t = {
       message: { es: "Cuéntame en qué puedo ayudarte...", en: "Tell me how I can help you..." },
     },
   },
+  footer: {
+    phrase: {
+      es: '"Codificar no solo es mi trabajo, también es mi pasatiempo y amo hacerlo."',
+      en: '"Coding is not just my job — it\'s my hobby and I love doing it."',
+    },
+    techTitle:   { es: "Tecnologías usadas:",  en: "Technologies used:"  },
+    navTitle:    { es: "Navegación",            en: "Navigation"          },
+    copyright:   { es: "2026 Juan Pablo Gallardo", en: "2026 Juan Pablo Gallardo" },
+    madeWith:    { es: "Hecho con amor en Colombia", en: "Made with love from Colombia" },
+  },
 } as const;

@@ -134,7 +134,8 @@ export function ContactSection() {
         src="/assets/contact/contact-section-bg.png"
         alt=""
         fill
-        className="object-cover pointer-events-none"
+        className="object-contain pointer-events-none opacity-50"
+        style={{ transform: "scale(0.75)", transformOrigin: "center center" }}
       />
 
       <div className="relative z-10 w-full max-w-[1300px] mx-auto
