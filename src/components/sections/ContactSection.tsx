@@ -7,6 +7,10 @@ import { useLang, t } from "@/context/LanguageContext";
 const TITLE_SIZE    = "clamp(34px, 4.2vw, 54px)";
 const SUBTITLE_SIZE = "clamp(15px, 1.5vw, 20px)";
 
+// Design widths for zoom — same approach as ExperienceSection / ProjectCard
+const CARDS_DESIGN_W = 498; // LinkedIn(213) + gap(10) + Gmail(275)
+const FORM_DESIGN_W  = 558; // contact form card design width
+
 type AnimState = "idle" | "entering" | "exiting";
 
 function ea(anim: AnimState, enter: string, exit: string, delayMs = 0) {
@@ -66,14 +70,17 @@ export function ContactSection() {
   const { lang } = useLang();
   const ct = t.contact;
 
-  const photoRef     = useRef<HTMLDivElement>(null);
-  const githubRef    = useRef<HTMLDivElement>(null);
-  const socialRowRef = useRef<HTMLDivElement>(null);
-  const formRef      = useRef<HTMLDivElement>(null);
+  const photoRef      = useRef<HTMLDivElement>(null);
+  const githubRef     = useRef<HTMLDivElement>(null);
+  const socialRowRef  = useRef<HTMLDivElement>(null);
+  const formRef       = useRef<HTMLDivElement>(null);
+  const cardsOuterRef = useRef<HTMLDivElement>(null);
   const [photoAnim,     setPhotoAnim]     = useState<AnimState>("idle");
   const [githubAnim,    setGithubAnim]    = useState<AnimState>("idle");
   const [socialRowAnim, setSocialRowAnim] = useState<AnimState>("idle");
   const [formAnim,      setFormAnim]      = useState<AnimState>("idle");
+  const [cardsZoom,     setCardsZoom]     = useState(1);
+  const [formZoom,      setFormZoom]      = useState(1);
 
   // Form state
   const [formData, setFormData] = useState({ email: "", name: "", message: "" });
@@ -100,6 +107,28 @@ export function ContactSection() {
       return obs;
     });
     return () => observers.forEach(o => o.disconnect());
+  }, []);
+
+  // ResizeObserver: zoom cards to maintain design on small screens
+  useEffect(() => {
+    const el = cardsOuterRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setCardsZoom(Math.min(1, entry.contentRect.width / CARDS_DESIGN_W));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // ResizeObserver: zoom form card to maintain design on small screens
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      setFormZoom(Math.min(1, entry.contentRect.width / FORM_DESIGN_W));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -181,55 +210,56 @@ export function ContactSection() {
                 To move this card vertically: adjust style={{ marginTop: X }} on the wrapper.
                 To shift icon/text inside: edit contentStyle on SocialCard below.
             */}
-            {/* ── Cards wrapper — scales down on mobile so icons/text stay in place ──
-                scale + origin-top shrinks visually; -mb compensates the dead space
-                transform leaves behind so the photo doesn't drift away.           */}
-            <div className="w-full flex flex-col items-center gap-[16px]
-                            scale-[0.80] origin-top -mb-[40px]
-                            lg:scale-100 lg:mb-0">
+            {/* ── Cards wrapper — zoom to fill container (same as ExperienceSection / ProjectCard) ── */}
+            <div ref={cardsOuterRef} className="w-full flex justify-center">
+              <div
+                style={{ width: CARDS_DESIGN_W, zoom: cardsZoom, flexShrink: 0 }}
+                className="flex flex-col items-center gap-[16px]"
+              >
 
-              <div ref={githubRef} className={`w-fit ${githubA.cls}`} style={githubA.style}>
-                <SocialCard
-                  href="https://github.com/juangallardo19"
-                  svgSrc="/assets/contact/card-github.svg"
-                  iconSrc="/assets/contact/github.svg"
-                  text="juangallardo19"
-                  w={210} h={107}
-                  contentStyle={{ paddingLeft: 5, paddingBottom: 5 }}
-                />
-              </div>
-
-              {/* LinkedIn + Gmail — always side by side */}
-              <div ref={socialRowRef} className="flex gap-[10px] w-full justify-center">
-
-                <div
-                  className={linkedinA.cls}
-                  style={{ flex: 213, minWidth: 0, ...linkedinA.style }}
-                >
+                <div ref={githubRef} className={`w-fit ${githubA.cls}`} style={githubA.style}>
                   <SocialCard
-                    href="https://linkedin.com/in/juanpablogallardo"
-                    svgSrc="/assets/contact/card-linkdn.svg"
-                    iconSrc="/assets/contact/linkdn.svg"
-                    text="Juan Gallardo"
-                    w={213} h={114}
-                    contentStyle={{ paddingBottom: 9, paddingLeft: 13 }}
+                    href="https://github.com/juangallardo19"
+                    svgSrc="/assets/contact/card-github.svg"
+                    iconSrc="/assets/contact/github.svg"
+                    text="juangallardo19"
+                    w={210} h={107}
+                    contentStyle={{ paddingLeft: 5, paddingBottom: 5 }}
                   />
                 </div>
 
-                <div
-                  className={gmailA.cls}
-                  style={{ flex: 275, minWidth: 0, ...gmailA.style }}
-                >
-                  <SocialCard
-                    href="mailto:Juangallardocsfn@gmail.com"
-                    svgSrc="/assets/contact/card-gmail.svg"
-                    iconSrc="/assets/contact/gmail.svg"
-                    text="Juangallardocsfn@gmail.com"
-                    w={275} h={108}
-                    contentStyle={{ paddingBottom: 14, paddingLeft: 3 }}
-                  />
-                </div>
+                {/* LinkedIn + Gmail — always side by side */}
+                <div ref={socialRowRef} className="flex gap-[10px]">
 
+                  <div
+                    className={linkedinA.cls}
+                    style={{ flex: 213, minWidth: 0, ...linkedinA.style }}
+                  >
+                    <SocialCard
+                      href="https://linkedin.com/in/juanpablogallardo"
+                      svgSrc="/assets/contact/card-linkdn.svg"
+                      iconSrc="/assets/contact/linkdn.svg"
+                      text="Juan Gallardo"
+                      w={213} h={114}
+                      contentStyle={{ paddingBottom: 9, paddingLeft: 13 }}
+                    />
+                  </div>
+
+                  <div
+                    className={gmailA.cls}
+                    style={{ flex: 275, minWidth: 0, ...gmailA.style }}
+                  >
+                    <SocialCard
+                      href="mailto:Juangallardocsfn@gmail.com"
+                      svgSrc="/assets/contact/card-gmail.svg"
+                      iconSrc="/assets/contact/gmail.svg"
+                      text="Juangallardocsfn@gmail.com"
+                      w={275} h={108}
+                      contentStyle={{ paddingBottom: 14, paddingLeft: 3 }}
+                    />
+                  </div>
+
+                </div>
               </div>
             </div>
           </div>
@@ -238,9 +268,11 @@ export function ContactSection() {
           {/* order-1: on mobile the form appears FIRST (above the photo column) */}
           <div
             ref={formRef}
-            className={`order-1 lg:order-2 relative w-full lg:max-w-[558px] ${rightA.cls}`}
+            className={`order-1 lg:order-2 w-full lg:max-w-[558px] ${rightA.cls}`}
             style={rightA.style}
           >
+            {/* Zoom wrapper — maintains form design proportions on small screens */}
+            <div className="relative mx-auto" style={{ width: FORM_DESIGN_W, zoom: formZoom, flexShrink: 0 }}>
             <form onSubmit={handleSubmit}>
               {/* SVG card background */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -374,6 +406,7 @@ export function ContactSection() {
                 )}
               </div>
             </form>
+            </div>{/* end zoom wrapper */}
           </div>
 
         </div>

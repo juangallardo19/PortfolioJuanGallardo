@@ -24,6 +24,9 @@ html {
   scroll-behavior: smooth;
   /* Parallax scroll variable updated by JS */
   --scroll-y: 0px;
+  /* Prevent iOS Safari from auto-adjusting font sizes (fixes iPhone rendering) */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
