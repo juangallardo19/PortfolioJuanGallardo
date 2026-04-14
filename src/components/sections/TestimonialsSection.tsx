@@ -221,6 +221,8 @@ export function TestimonialsSection() {
   const [cardWidth, setCardWidth]         = useState(0);
   const [extIdx, setExtIdx]               = useState(PRE);
   const [transitioning, setTransitioning] = useState(true);
+  // Prevents new navigation while the snap-correction rAF is pending
+  const navigating = useRef(false);
 
   useEffect(() => {
     const measure = () => {
@@ -233,8 +235,19 @@ export function TestimonialsSection() {
     return () => ro.disconnect();
   }, [visibleCards]);
 
-  const goNext = useCallback(() => { setTransitioning(true); setExtIdx(i => i + 1); }, []);
-  const goPrev = useCallback(() => { setTransitioning(true); setExtIdx(i => i - 1); }, []);
+  const goNext = useCallback(() => {
+    if (navigating.current) return;
+    navigating.current = true;
+    setTransitioning(true);
+    setExtIdx(i => i + 1);
+  }, []);
+
+  const goPrev = useCallback(() => {
+    if (navigating.current) return;
+    navigating.current = true;
+    setTransitioning(true);
+    setExtIdx(i => i - 1);
+  }, []);
 
   const onTransitionEnd = useCallback(() => {
     setTransitioning(false);
@@ -243,7 +256,10 @@ export function TestimonialsSection() {
       if (prev < PRE)      return prev + N;
       return prev;
     });
-    requestAnimationFrame(() => requestAnimationFrame(() => setTransitioning(true)));
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      setTransitioning(true);
+      navigating.current = false;
+    }));
   }, []);
 
   const translateX = cardWidth > 0 ? -(extIdx * cardWidth) : 0;
