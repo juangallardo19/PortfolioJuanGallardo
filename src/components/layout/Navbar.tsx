@@ -113,7 +113,7 @@ export function Navbar() {
 
             {/* CV Button */}
             <a
-              href="/assets/cv.pdf"
+              href="/assets/cv-juan-gallardo.pdf"
               download
               className="flex items-center justify-center gap-[8px] px-[22px] py-[12px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200 animate-bubble-in"
               style={{
@@ -251,7 +251,7 @@ export function Navbar() {
 
             {/* CV Button */}
             <a
-              href="/assets/cv.pdf"
+              href="/assets/cv-juan-gallardo.pdf"
               download
               className="flex items-center gap-[8px] px-[20px] py-[10px] font-bold text-[17px] text-[#1a1a1a] whitespace-nowrap leading-none hover:scale-[1.05] active:scale-[0.98] transition-transform duration-200"
               style={{
