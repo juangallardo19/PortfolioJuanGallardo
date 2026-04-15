@@ -62,7 +62,7 @@ const PROJECTS: ProjectData[] = [
       post: { es: " recreado haciendo uso de patrones de software, bases de datos y jugabilidad en tiempo real.", en: " recreated using software patterns, databases, and real-time gameplay." },
     },
     icons: [PI.java, PI.react, PI.typescript, PI.postgres],
-    link: "https://github.com/juangallardo19", linkType: "github",
+    link: "https://github.com/juangallardo19/OneOnlineBackend", linkType: "github",
     cardSvg: "/assets/projects/Card 1.svg", large: true, textAlign: "left",
   },
   {
@@ -73,7 +73,7 @@ const PROJECTS: ProjectData[] = [
       post: { es: " desarrollado en equipo aplicando GitFlow como metodología.", en: " interface built as a team applying GitFlow as methodology." },
     },
     icons: [PI.git, PI.html5, PI.css3],
-    link: "https://github.com/juangallardo19", linkType: "github",
+    link: "https://github.com/juangallardo19/ClonacionMercadoLibre", linkType: "github",
     cardSvg: "/assets/projects/Card 2.svg", large: false, textAlign: "right",
   },
   {
@@ -84,7 +84,7 @@ const PROJECTS: ProjectData[] = [
       post: { es: " desarrollado en React con Tailwind CSS.", en: " interface built in React with Tailwind CSS." },
     },
     icons: [PI.react, PI.tailwind],
-    link: "https://github.com/juangallardo19", linkType: "github",
+    link: "https://github.com/juangallardo19/LandingPageDisenoInterfaces", linkType: "github",
     cardSvg: "/assets/projects/Card 3.svg", large: false, textAlign: "left",
   },
   {
@@ -95,7 +95,7 @@ const PROJECTS: ProjectData[] = [
       post: { es: " implementando patrones de software y estructuras de datos.", en: " implementing software patterns and data structures." },
     },
     icons: [PI.react, PI.css3, PI.python],
-    link: "https://github.com/juangallardo19", linkType: "github",
+    link: "https://github.com/juanGallardor/ReproductorMusica", linkType: "github",
     cardSvg: "/assets/projects/Card 4.svg", large: false, textAlign: "right",
   },
   {
